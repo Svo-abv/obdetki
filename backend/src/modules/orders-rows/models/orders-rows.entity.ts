@@ -11,20 +11,20 @@ export class OrdersRows {
     @Field(type => ID)
     id: number;
 
-    @Column()
+    @Column({ default: 0 })
     @Field()
-    count: number;
+    count?: number;
 
-    @Column()
+    @Column({ default: 0 })
     @Field()
-    price: number;
+    price?: number;
 
     @ManyToOne(() => Orders, order => order.id)
     @Field(type => Orders)
-    order: Orders;
+    order?: Orders;
 
     @ManyToOne(() => Products, product => product.id)
     @Field(type => Products)
-    product: Products;
+    product?: Products;
 
 }

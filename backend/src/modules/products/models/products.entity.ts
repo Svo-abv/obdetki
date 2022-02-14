@@ -12,42 +12,46 @@ export class Products {
 
     @PrimaryGeneratedColumn()
     @Field(type => ID)
-    id: number;
+    id?: number;
 
-    @Column()
+    @Column({ default: false })
     @Field()
-    name: string;
+    deleted?: boolean;
 
-    @Column()
+    @Column({ default: null })
     @Field()
-    code: string;
+    name?: string;
 
-    @Column()
+    @Column({ default: null })
     @Field()
-    price: number;
+    code?: string;
+
+    @Column({ default: 0 })
+    @Field()
+    price?: number;
 
     @Column({ unique: true })
     @Field()
-    uuid_1c: string;
+    uuid_1c?: string;
 
     @ManyToOne(() => ProductBrands, productBrand => productBrand.id)
     @Field(type => ProductBrands)
-    productBrands: ProductBrands;
+    productBrands?: ProductBrands;
 
     @ManyToOne(() => ProductCategories, productCategory => productCategory.id)
     @Field(type => ProductCategories)
-    productCategories: ProductCategories;
+    productCategories?: ProductCategories;
 
     @OneToMany(() => BasketRows, basketRows => basketRows.product)
     @Field(type => [BasketRows])
-    basketRows: BasketRows[];
+    basketRows?: BasketRows[];
 
     @OneToMany(() => OrdersRows, ordersRows => ordersRows.product)
     @Field(type => [OrdersRows])
-    ordersRows: OrdersRows[];
+    ordersRows?: OrdersRows[];
 
     @OneToMany(() => ProductImages, productImages => productImages.product)
     @Field(type => [ProductImages])
-    productImages: ProductImages[];
+    productImages?: ProductImages[];
 
 }

@@ -9,15 +9,15 @@ export class Basket {
 
     @PrimaryGeneratedColumn()
     @Field(type => ID)
-    id: number;
+    id?: number;
 
-    @OneToOne(() => Users)
+    @OneToOne(() => Users, user => user.id, { nullable: true })
     @JoinColumn()
-    @Field(type => Users)
-    user: Users;
+    @Field(type => Users, { nullable: true })
+    user?: Users;
 
-    @OneToMany(() => BasketRows, basketRows => basketRows.basket)
-    @Field(type => [BasketRows])
-    basketRows: BasketRows[];
+    @OneToMany(() => BasketRows, basketRows => basketRows.basket, { nullable: true })
+    @Field(type => [BasketRows], { nullable: 'itemsAndList' })
+    basketRows?: BasketRows[];
 
 }

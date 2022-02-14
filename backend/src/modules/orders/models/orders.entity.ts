@@ -12,11 +12,11 @@ export class Orders {
     @Field(type => ID)
     id: number;
 
-    @Column()
+    @Column({ default: null })
     @Field()
     number: number;
 
-    @Column()
+    @Column('timestamp with time zone', { nullable: false, default: () => 'CURRENT_TIMESTAMP' })
     @Field()
     date: Date;
 

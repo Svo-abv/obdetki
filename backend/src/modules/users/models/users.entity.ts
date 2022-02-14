@@ -11,43 +11,43 @@ export class Users {
     @Field(type => ID)
     id: number;
 
-    @Column()
+    @Column({ default: null })
     @Field()
-    name: string;
+    name?: string;
 
     @Column()
     @Field()
-    password: string;
+    password?: string;
 
-    @Column()
+    @Column({ default: null })
     @Field()
-    town: string;
+    town?: string;
 
-    @Column()
+    @Column({ default: null })
     @Field()
-    address: string;
+    address?: string;
 
     @Column({ unique: true })
     @Field()
-    email: string;
+    email?: string;
 
-    @Column()
+    @Column({ default: null })
     @Field()
-    telephone: string;
+    telephone?: string;
 
     @Column({ default: "USER" })
     @Field()
-    role: string;
+    role?: string;
 
     @Column({ unique: true })
     @Field()
-    uuid_1c: string;
+    uuid_1c?: string;
 
-    @OneToOne(() => Basket, basket => basket.user)
-    @Field(type => Basket)
-    basket: Basket;
+    @OneToOne(() => Basket, basket => basket.user, { nullable: true })
+    @Field(type => Basket, { nullable: true })
+    basket?: Basket;
 
-    @OneToMany(() => Orders, order => order.user)
-    @Field(type => [Orders])
-    order: Orders[];
+    @OneToMany(() => Orders, order => order.user, { nullable: true })
+    @Field(type => [Orders], { nullable: 'itemsAndList' })
+    order?: Orders[];
 }

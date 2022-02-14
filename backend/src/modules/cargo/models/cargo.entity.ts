@@ -14,7 +14,7 @@ export class Cargo {
     @Field()
     name: string;
 
-    @Column()
+    @Column({ default: 0 })
     @Field()
     minimalSumm: number;
 
