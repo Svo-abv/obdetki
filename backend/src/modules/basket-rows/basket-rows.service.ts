@@ -16,9 +16,9 @@ export class BasketRowsService {
     async getBasketRowsByBasketId(id: number): Promise<BasketRows[]> {
         return await this.basketRowsRepository.find({ where: { basket: id } });
     }
-    async getProductByBasketRow(row: BasketRows): Promise<Products> {
+    async getProductByBasketRowId(id: number): Promise<Products> {
 
-        const { product } = await this.basketRowsRepository.findOne(row.id, { relations: ["product"] });
+        const { product } = await this.basketRowsRepository.findOne(id, { relations: ["product"] });
         return product;
     }
 }

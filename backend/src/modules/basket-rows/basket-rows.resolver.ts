@@ -35,6 +35,7 @@ export class BasketRowsResolver {
 
     @ResolveField('product', returns => Products)
     async getProduct(@Parent() row: BasketRows) {
-        return this.basketRowsService.getProductByBasketRow(row);
+        const { id } = row;
+        return this.basketRowsService.getProductByBasketRowId(id);
     }
 }
