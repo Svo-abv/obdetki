@@ -129,7 +129,8 @@ type Query {
   getBasketByUserId(id: Float!): Basket
   getBasketRowById(id: Float!): BasketRows!
   getBasketRowsByUserId(id: Float!): [BasketRows!]
-  getProducttById(id: Float!): Products!
   getOrdersById(id: Float!): Orders!
   getOrdersByUserId(id: Float!): [Orders!]!
+  getProducttById(id: Float!): Products!
+  test(id: Float!): Products!
 }

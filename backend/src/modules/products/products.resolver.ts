@@ -19,7 +19,15 @@ export class ProductsResolver {
         }
         return product;
     }
+    @Query(returns => Products)
+    async test(@Args('id') id: number): Promise<Products> {
 
+        const product = await this.productsService.getProductByBasketRow(id);
+        if (!product) {
+            throw new NotFoundException(id);
+        }
+        return product;
+    }
     // @Query(returns => Basket, { nullable: true })
     // async getBasketByUserId(@Args('id') id: number): Promise<Basket> {
 

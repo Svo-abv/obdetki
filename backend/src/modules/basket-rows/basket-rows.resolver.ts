@@ -1,7 +1,6 @@
 import { NotFoundException } from '@nestjs/common';
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Products } from '../products/models/products.entity';
-import { ProductsService } from '../products/products.service';
 import { BasketRowsService } from './basket-rows.service';
 import { BasketRows } from './models/basket-rows.entity';
 
@@ -10,7 +9,6 @@ export class BasketRowsResolver {
 
     constructor(
         private readonly basketRowsService: BasketRowsService,
-        private readonly productsService: ProductsService,
     ) { }
     @Query(returns => BasketRows)
     async getBasketRowById(@Args('id') id: number): Promise<BasketRows> {

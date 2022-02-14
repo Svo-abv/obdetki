@@ -14,8 +14,8 @@ export class ProductsService {
         return await this.productRepository.findOne(id);
     }
 
-    async getProductByBasketRow(row: BasketRows): Promise<Products> {
-        return await this.productRepository.findOne({ where: { basketRows: row } }
+    async getProductByBasketRow(id: number): Promise<Products> {
+        return await this.productRepository.findOne({ where: { basketRows: id } }
 
         ).then((data) => { console.log(data); return data; });
     }
