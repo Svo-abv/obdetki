@@ -1,15 +1,25 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { ObjectType, Field, ID } from "@nestjs/graphql";
+import { Orders } from "src/modules/orders/models/orders.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
+@ObjectType({ description: 'Cargo' })
 export class Cargo {
 
     @PrimaryGeneratedColumn()
+    @Field(type => ID)
     id: number;
 
     @Column()
+    @Field()
     name: string;
 
     @Column()
+    @Field()
     minimalSumm: number;
+
+    @OneToMany(() => Orders, orders => orders.cargo)
+    @Field(type => [Orders])
+    orders: Orders[];
 
 }

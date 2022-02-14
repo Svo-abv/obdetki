@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { MyGraphQlModule } from './my-graph-ql/my-graph-ql.module';
 import { UsersModule } from './modules/users/users.module';
 import { PagesModule } from './modules/pages/pages.module';
 import { OrdersModule } from './modules/orders/orders.module';

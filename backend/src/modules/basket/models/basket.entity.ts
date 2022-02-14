@@ -1,13 +1,23 @@
+import { Field, ID, ObjectType } from "@nestjs/graphql";
+import { BasketRows } from "src/modules/basket-rows/models/basket-rows.entity";
 import { Users } from "src/modules/users/models/users.entity";
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
+@ObjectType({ description: 'Basket' })
 export class Basket {
 
     @PrimaryGeneratedColumn()
+    @Field(type => ID)
     id: number;
 
-    @ManyToOne(type => Users, user => user.id)
+    @OneToOne(() => Users)
+    @JoinColumn()
+    @Field(type => Users)
     user: Users;
+
+    @OneToMany(() => BasketRows, basketRows => basketRows.basket)
+    @Field(type => [BasketRows])
+    basketRows: BasketRows[];
 
 }

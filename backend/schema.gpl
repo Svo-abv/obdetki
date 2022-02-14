@@ -2,11 +2,125 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-"""Users"""
-type UsersModel {
+"""Cargo"""
+type Cargo {
   id: ID!
+  name: String!
+  minimalSumm: Float!
+  orders: [Orders!]!
+}
+
+"""Orders"""
+type Orders {
+  id: ID!
+  number: Float!
+  date: DateTime!
+  uuid_1c: String!
+  cargo: Cargo!
+  user: Users!
+  ordersRows: [OrdersRows!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""OrdersRows"""
+type OrdersRows {
+  id: ID!
+  count: Float!
+  price: Float!
+  order: Orders!
+  product: Products!
+}
+
+"""ProductBrands"""
+type ProductBrands {
+  id: ID!
+  name: String!
+  uuid_1c: String!
+  product: [Products!]!
+}
+
+"""ProductCategories"""
+type ProductCategories {
+  id: ID!
+  name: String!
+  uuid_1c: String!
+  product: [Products!]!
+  parentCategory: [ProductCategories!]!
+}
+
+"""ProductImages"""
+type ProductImages {
+  id: ID!
+  url: String!
+  default: Boolean!
+  product: Products!
+}
+
+"""Products"""
+type Products {
+  id: ID!
+  name: String!
+  code: String!
+  price: Float!
+  uuid_1c: String!
+  productBrands: ProductBrands!
+  productCategories: ProductCategories!
+  basketRows: [BasketRows!]!
+  ordersRows: [OrdersRows!]!
+  productImages: [ProductImages!]!
+}
+
+"""BasketRows"""
+type BasketRows {
+  count: Float!
+  price: Float!
+  basket: Basket!
+  product: Products!
+}
+
+"""Basket"""
+type Basket {
+  id: ID!
+  user: Users!
+  basketRows: [BasketRows!]!
+}
+
+"""Users"""
+type Users {
+  id: ID!
+  name: String!
+  password: String!
+  town: String!
+  address: String!
+  email: String!
+  telephone: String!
+  role: String!
+  uuid_1c: String!
+  basket: Basket!
+  order: [Orders!]!
+}
+
+"""ProductPropertiesRows"""
+type ProductPropertiesRows {
+  id: ID!
+  value: String!
+  product: Products!
+  property: ProductProperties!
+}
+
+"""ProductProperties"""
+type ProductProperties {
+  id: ID!
+  name: String!
+  uuid_1c: String!
+  productPropertiesRows: [ProductPropertiesRows!]!
 }
 
 type Query {
-  getUserById(id: Float!): UsersModel!
+  getUserById(id: Float!): Users!
+  getAllUsers: Users!
 }
