@@ -30,6 +30,8 @@ import { ProductBrands } from './modules/product-brands/models/product-brands.en
 import { ProductImages } from './modules/product-images/models/product-images.entity';
 import { ProductProperties } from './modules/product-properties/models/product-properties.entity';
 import { ProductPropertiesRows } from './modules/product-properties-rows/models/product-properties-rows.entity';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -54,7 +56,10 @@ import { ProductPropertiesRows } from './modules/product-properties-rows/models/
       ],
       synchronize: true,
     }),
-    MyGraphQlModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'static'),
+      exclude: ['/api*'],
+    }),
     UsersModule, PagesModule,
     OrdersModule, OrdersRowsModule,
     BasketModule, BasketRowsModule,

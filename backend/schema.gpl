@@ -2,12 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-"""MyGraphQl"""
-type MyGraphQl {
+"""Users"""
+type UsersModel {
   id: ID!
-  title: String!
 }
 
 type Query {
-  mygraphql(id: String!): MyGraphQl!
+  getUserById(id: Float!): UsersModel!
 }
