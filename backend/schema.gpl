@@ -69,7 +69,7 @@ type Products {
   price: Float!
   uuid_1c: String!
   productBrands: ProductBrands!
-  productCategories: ProductCategories!
+  productCategories: ProductBrands!
   basketRows: [BasketRows!]!
   ordersRows: [OrdersRows!]!
   productImages: [ProductImages!]!
@@ -131,6 +131,10 @@ type Query {
   getBasketRowsByUserId(id: Float!): [BasketRows!]
   getOrdersById(id: Float!): Orders!
   getOrdersByUserId(id: Float!): [Orders!]!
-  getProducttById(id: Float!): Products!
-  test(id: Float!): Products!
+  getProductById(id: Float!): Products!
+  getAllProducts: [Products!]!
+  getImagesById(id: Float!): ProductImages!
+  getImagesByProductId(id: Float!): [ProductImages!]
+  getProductBrandsById(id: Float!): ProductBrands!
+  getAllProductsBrands: [ProductBrands!]!
 }

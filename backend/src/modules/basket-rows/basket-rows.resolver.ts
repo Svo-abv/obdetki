@@ -32,7 +32,7 @@ export class BasketRowsResolver {
     }
 
     @ResolveField('product', returns => Products)
-    async getProduct(@Parent() row: BasketRows) {
+    async getProductByBasketRowId(@Parent() row: BasketRows) {
         const { id } = row;
         return this.basketRowsService.getProductByBasketRowId(id);
     }

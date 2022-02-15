@@ -1,5 +1,8 @@
 import { NotFoundException } from '@nestjs/common';
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { ProductBrands } from '../product-brands/models/product-brands.entity';
+import { ProductImages } from '../product-images/models/product-images.entity';
+import { ProductImagesService } from '../product-images/product-images.service';
 import { Products } from './models/products.entity';
 import { ProductsService } from './products.service';
 
@@ -7,11 +10,11 @@ import { ProductsService } from './products.service';
 export class ProductsResolver {
     constructor(
         private readonly productsService: ProductsService,
-        //private readonly basketRowsService: BasketRowsService,
+        private readonly productImagesService: ProductImagesService,
     ) { }
 
     @Query(returns => Products)
-    async getProducttById(@Args('id') id: number): Promise<Products> {
+    async getProductById(@Args('id') id: number): Promise<Products> {
 
         const product = await this.productsService.getProductById(id);
         if (!product) {
@@ -19,15 +22,34 @@ export class ProductsResolver {
         }
         return product;
     }
-    @Query(returns => Products)
-    async test(@Args('id') id: number): Promise<Products> {
+    @Query(returns => [Products])
+    async getAllProducts(): Promise<Products[]> {
 
-        const product = await this.productsService.getProductByBasketRow(id);
-        if (!product) {
-            throw new NotFoundException(id);
+        const products = await this.productsService.getAllProducts();
+        if (!products) {
+            throw new NotFoundException();
         }
-        return product;
+        return products;
     }
+
+    @ResolveField('productBrands', returns => ProductBrands)
+    async getBrandByProductId(@Parent() product: Products) {
+        const { id } = product;
+        return this.productsService.getBrandByProductId(id);
+    }
+
+    @ResolveField('productCategories', returns => ProductBrands)
+    async getCategoryByProductId(@Parent() product: Products) {
+        const { id } = product;
+        return this.productsService.getCategoryByProductId(id);
+    }
+
+    @ResolveField('productImages', returns => [ProductImages])
+    async getImagesByProductId(@Parent() product: Products) {
+        const { id } = product;
+        return this.productImagesService.getImagesByProductId(id);
+    }
+
     // @Query(returns => Basket, { nullable: true })
     // async getBasketByUserId(@Args('id') id: number): Promise<Basket> {
 

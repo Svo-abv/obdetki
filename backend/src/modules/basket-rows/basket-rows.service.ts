@@ -13,11 +13,12 @@ export class BasketRowsService {
     async getBasketRowById(id: number): Promise<BasketRows> {
         return await this.basketRowsRepository.findOne(id);
     }
+
     async getBasketRowsByBasketId(id: number): Promise<BasketRows[]> {
         return await this.basketRowsRepository.find({ where: { basket: id } });
     }
-    async getProductByBasketRowId(id: number): Promise<Products> {
 
+    async getProductByBasketRowId(id: number): Promise<Products> {
         const { product } = await this.basketRowsRepository.findOne(id, { relations: ["product"] });
         return product;
     }
