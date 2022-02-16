@@ -1,0 +1,16 @@
+.searchBlock{
+    margin-top:10px;
+    padding: 15px 5px;
+    border-bottom: 1px solid #D3D3D3;
+}
+.searchBlock input{
+    /* margin-right:10px; */
+}
+
+.earchCol,.socialIconsCol{
+    margin: auto;
+}
+
+.socialIconsCol h5{
+    margin: 0;
+}

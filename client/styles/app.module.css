@@ -1,0 +1,22 @@
+.container {
+  padding: 0 2rem;
+  margin-right: auto;
+  margin-left: auto;
+  width: 1170px;
+}
+
+.footer {
+  margin-top: 30px;
+  display: flex;
+  flex: 1;
+  padding: 2rem 0;
+  border-top: 1px solid #eaeaea;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer a {
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}

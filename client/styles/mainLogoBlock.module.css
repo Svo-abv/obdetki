@@ -1,0 +1,28 @@
+.container{
+    margin-top: 20px;
+}
+
+.colAuth{
+    margin: auto;
+}
+
+.colLogo{
+    text-align: center;
+     margin: auto;
+}
+
+.colLogo h1{
+    font-size: 36px;
+}
+
+.colLogo h2{
+    text-align: center;
+    color: #B6B6B6;
+    font-size: 20px;
+    margin: auto;
+}
+
+.colBasket{
+    text-align: right ;
+    margin: auto;
+}
