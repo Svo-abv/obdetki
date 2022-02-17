@@ -7,21 +7,28 @@ import ContactsTopBlock from '../components/contactsTopBlock';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MainLogoBlock from '../components/mainLogoBlock';
 import NavigationMenu from '../components/navigationMenu';
+import { StoreProvider, useStore } from '../stores/StoreProvider';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const store = useStore();
+  store.pages = pageProps.Pages;
 
   return (
+
     <div className={styles.container}>
-      <Head>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <ContactsTopBlock />
-      <MainLogoBlock />
-      <NavigationMenu />
-      <Component {...pageProps} />
-      <FooterPage />
+      <StoreProvider {...pageProps}>
+        <Head>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <ContactsTopBlock />
+        <MainLogoBlock />
+        <NavigationMenu props={pageProps} />
+        <Component {...pageProps} />
+        <FooterPage />
+      </StoreProvider>
     </div>
   );
 }
 
 export default MyApp
+

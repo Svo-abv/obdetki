@@ -12,26 +12,23 @@ const SliderMainPage = () => {
 
     return (
         <Carousel className={classes.sliderContainer} activeIndex={index} onSelect={handleSelect} fade>
-            <Carousel.Item>
+            <Carousel.Item style={{ width: 1000, height: 500 }}>
                 <Image
                     src="/images/slide1.jpg"
                     alt="First slide"
-                    width={1000}
-                    height={500}
+                    layout='fill'
                 />
                 <Carousel.Caption>
                     <h3>First slide label</h3>
                     <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
                 </Carousel.Caption>
             </Carousel.Item>
-            <Carousel.Item>
+            <Carousel.Item style={{ width: 1000, height: 500 }}>
                 <Image
                     src="/images/slide2.png"
                     alt="Third slide"
-                    width={1000}
-                    height={500}
+                    layout='fill'
                 />
-
                 <Carousel.Caption>
                     <h3>Third slide label</h3>
                     <p>

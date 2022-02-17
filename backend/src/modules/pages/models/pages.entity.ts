@@ -9,15 +9,23 @@ export class Pages {
     @Field(type => ID)
     id: number;
 
-    @Column()
+    @Column('timestamp with time zone', { nullable: false, default: () => 'CURRENT_TIMESTAMP' })
     @Field()
     date: string;
 
-    @Column()
+    @Column({ default: null })
     @Field()
     title: string;
 
-    @Column({ type: "text" })
+    @Column()
+    @Field()
+    url: string;
+
+    @Column({ type: "text", default: null })
+    @Field()
+    description: string;
+
+    @Column({ type: "text", default: null })
     @Field()
     content: string;
 

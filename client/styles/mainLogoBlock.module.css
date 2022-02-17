@@ -2,6 +2,17 @@
     margin-top: 20px;
 }
 
+.container a {
+    color:black;
+    font-weight: bolder;
+    text-decoration: none;
+    font-size: 16px;
+}
+.container a:hover,.container a:focus {
+  color: #0073aa;
+  transition: all 0.3s ease 0s;
+}
+
 .colAuth{
     margin: auto;
 }

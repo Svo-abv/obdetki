@@ -106,6 +106,16 @@ type Users {
   order: [Orders!]
 }
 
+"""Pages"""
+type Pages {
+  id: ID!
+  date: String!
+  title: String!
+  url: String!
+  description: String!
+  content: String!
+}
+
 """ProductPropertiesRows"""
 type ProductPropertiesRows {
   id: ID!
@@ -131,6 +141,8 @@ type Query {
   getBasketRowsByUserId(id: Float!): [BasketRows!]
   getOrdersById(id: Float!): Orders!
   getOrdersByUserId(id: Float!): [Orders!]!
+  getPageById(id: Float!): Pages!
+  getAllPages: [Pages!]!
   getProductById(id: Float!): Products!
   getAllProducts: [Products!]!
   getImagesById(id: Float!): ProductImages!

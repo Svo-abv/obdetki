@@ -6,3 +6,23 @@
     display: inline-block;
     position: relative;
 }
+
+.name, .name2{
+ display: block;
+font-size: 16px;
+line-height: 28px;
+font-weight: 500;
+color: #ffffff;
+padding: 0 10px 2px;
+position: absolute;
+left: 30px;
+background: #0099e0;
+}
+
+.name{
+bottom: 65px;
+}
+
+.name2{
+bottom: 30px;
+}

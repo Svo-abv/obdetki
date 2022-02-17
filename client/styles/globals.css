@@ -5,3 +5,12 @@
 hr{
     color: #D3D3D3;
 }
+
+.main {
+  margin-top: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
