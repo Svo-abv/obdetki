@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { Basket } from "src/modules/basket/models/basket.entity";
 import { Orders } from "src/modules/orders/models/orders.entity";
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 @ObjectType({ description: 'Users' })
@@ -29,7 +29,7 @@ export class Users {
 
     @Column({ unique: true })
     @Field()
-    email?: string;
+    email: string;
 
     @Column({ default: null })
     @Field()
@@ -39,9 +39,15 @@ export class Users {
     @Field()
     role?: string;
 
-    @Column({ unique: true })
+    @Column({ unique: true, default: null })
     @Field()
     uuid_1c?: string;
+
+    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+    createdAt: Date;
+
+    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+    updatedAt: Date;
 
     @OneToOne(() => Basket, basket => basket.user, { nullable: true })
     @Field(type => Basket, { nullable: true })

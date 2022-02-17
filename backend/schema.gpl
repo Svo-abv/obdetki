@@ -106,6 +106,25 @@ type Users {
   order: [Orders!]
 }
 
+type AuthUserDto {
+  JWTKey: String!
+}
+
+type ValidUserDto {
+  id: Float
+  JWTKey: String!
+  name: String
+}
+
+type UserDto {
+  email: String!
+  role: String
+  name: String
+  town: String
+  address: String
+  telephone: String
+}
+
 """Pages"""
 type Pages {
   id: ID!
@@ -133,8 +152,10 @@ type ProductProperties {
 }
 
 type Query {
-  getUserById(id: Float!): Users!
-  getAllUsers: [Users!]!
+  login(data: LoginUserInput!): ValidUserDto!
+  checkAuth: AuthUserDto!
+  getUserById(id: Float!): UserDto!
+  getAllUsers: [UserDto!]!
   getBasketById(id: Float!): Basket!
   getBasketByUserId(id: Float!): Basket
   getBasketRowById(id: Float!): BasketRows!
@@ -149,4 +170,23 @@ type Query {
   getImagesByProductId(id: Float!): [ProductImages!]
   getProductBrandsById(id: Float!): ProductBrands!
   getAllProductsBrands: [ProductBrands!]!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  registration(data: UserInput!): ValidUserDto!
+}
+
+input UserInput {
+  email: String!
+  password: String!
+  role: String
+  name: String
+  town: String
+  address: String
+  telephone: String
 }

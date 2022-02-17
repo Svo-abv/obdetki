@@ -9,12 +9,13 @@ import { Basket } from '../basket/models/basket.entity';
 import { Orders } from '../orders/models/orders.entity';
 import { OrdersService } from '../orders/orders.service';
 import { OrdersModule } from '../orders/orders.module';
+import { AuthModule } from 'src/utils/auth/auth.module';
 
 @Module({
   providers: [UsersService, UsersResolver, BasketService, OrdersService],
   imports: [
     TypeOrmModule.forFeature([Users, Basket, Orders]),
-    BasketModule, OrdersModule
+    BasketModule, OrdersModule, AuthModule
   ]
 })
 export class UsersModule { }

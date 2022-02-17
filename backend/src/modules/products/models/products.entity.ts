@@ -4,7 +4,7 @@ import { OrdersRows } from "src/modules/orders-rows/models/orders-rows.entity";
 import { ProductBrands } from "src/modules/product-brands/models/product-brands.entity";
 import { ProductCategories } from "src/modules/product-categories/models/product-categories.entity";
 import { ProductImages } from "src/modules/product-images/models/product-images.entity";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 @ObjectType({ description: 'Products' })
@@ -33,6 +33,12 @@ export class Products {
     @Column({ unique: true })
     @Field()
     uuid_1c?: string;
+
+    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+    createdAt: Date;
+
+    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+    updatedAt: Date;
 
     @ManyToOne(() => ProductBrands, productBrand => productBrand.id)
     @Field(type => ProductBrands)
