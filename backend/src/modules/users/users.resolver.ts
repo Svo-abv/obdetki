@@ -1,4 +1,4 @@
-import { Headers, NotFoundException, UseGuards } from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, Context, GqlExecutionContext, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { BasketService } from '../basket/basket.service';
 import { Basket } from '../basket/models/basket.entity';
@@ -7,12 +7,10 @@ import { OrdersService } from '../orders/orders.service';
 import { AuthUserDto } from './dto/auth-user.dto';
 import { ValidUserDto } from './dto/valid-user.dto';
 import { LoginUserInput } from './inputs/login-user.input';
-import { ChekAuthInput } from './inputs/check-auth-user.input';
 import { UserInput } from './inputs/create-user.input';
 import { Users } from './models/users.entity';
 import { UsersService } from './users.service';
 import { UserDto } from './dto/user.dto';
-import { CurrentUser } from '../../utils/decorators/users.decorator';
 import { CheckAuthGuard } from 'src/utils/guards/checkauth.guards';
 
 @Resolver(of => Users)
@@ -70,5 +68,4 @@ export class UsersResolver {
         const { id } = user;
         return this.ordersService.getOrdersByUserId(id);
     }
-
 }

@@ -12,7 +12,7 @@ export class Products {
 
     @PrimaryGeneratedColumn()
     @Field(type => ID)
-    id?: number;
+    id: number;
 
     @Column({ default: false })
     @Field()

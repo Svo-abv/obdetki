@@ -12,11 +12,11 @@ export class ProductBrands {
 
     @Column()
     @Field()
-    name: string;
+    name?: string;
 
     @Column({ unique: true })
     @Field()
-    uuid_1c: string;
+    uuid_1c?: string;
 
     @OneToMany(() => Products, product => product.productBrands)
     @Field(type => [Products])

@@ -6,11 +6,12 @@ import { Products } from './models/products.entity';
 import { ProductImagesService } from '../product-images/product-images.service';
 import { ProductImages } from '../product-images/models/product-images.entity';
 import { ProductImagesModule } from '../product-images/product-images.module';
+import { AuthModule } from 'src/utils/auth/auth.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Products, ProductImages]),
-    ProductImagesModule
+    ProductImagesModule, AuthModule
   ],
   providers: [ProductsService, ProductsResolver, ProductImagesService],
 })

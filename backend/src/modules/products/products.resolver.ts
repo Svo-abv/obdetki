@@ -1,8 +1,11 @@
-import { NotFoundException } from '@nestjs/common';
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { NotFoundException, UseGuards } from '@nestjs/common';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { CheckAuthGuard } from 'src/utils/guards/checkauth.guards';
 import { ProductBrands } from '../product-brands/models/product-brands.entity';
 import { ProductImages } from '../product-images/models/product-images.entity';
 import { ProductImagesService } from '../product-images/product-images.service';
+import { ProductsDto } from './dto/products.dto';
+import { ProductInput } from './inputs/create-product-input';
 import { Products } from './models/products.entity';
 import { ProductsService } from './products.service';
 
@@ -15,16 +18,24 @@ export class ProductsResolver {
 
     @Query(returns => Products)
     async getProductById(@Args('id') id: number): Promise<Products> {
-
         const product = await this.productsService.getProductById(id);
         if (!product) {
             throw new NotFoundException(id);
         }
         return product;
     }
+
+    @Query(returns => Products)
+    async getProductByUuid1c(@Args('uuid') uuid: string): Promise<Products> {
+        const product = await this.productsService.getProductByUuid1c(uuid);
+        if (!product) {
+            throw new NotFoundException(uuid);
+        }
+        return product;
+    }
+
     @Query(returns => [Products])
     async getAllProducts(): Promise<Products[]> {
-
         const products = await this.productsService.getAllProducts();
         if (!products) {
             throw new NotFoundException();
@@ -49,6 +60,13 @@ export class ProductsResolver {
         const { id } = product;
         return this.productImagesService.getImagesByProductId(id);
     }
+
+    @UseGuards(CheckAuthGuard)
+    @Mutation(returns => ProductsDto)
+    async createProduct(@Args('data') data: ProductInput): Promise<ProductsDto> {
+        return this.productsService.createProduct(data);
+    }
+
 
     // @Query(returns => Basket, { nullable: true })
     // async getBasketByUserId(@Args('id') id: number): Promise<Basket> {

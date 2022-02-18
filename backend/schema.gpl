@@ -135,6 +135,14 @@ type Pages {
   content: String!
 }
 
+type ProductsDto {
+  id: Float!
+}
+
+type ProductBrandsDto {
+  id: Float!
+}
+
 """ProductPropertiesRows"""
 type ProductPropertiesRows {
   id: ID!
@@ -165,10 +173,15 @@ type Query {
   getPageById(id: Float!): Pages!
   getAllPages: [Pages!]!
   getProductById(id: Float!): Products!
+  getProductByUuid1c(uuid: String!): Products!
   getAllProducts: [Products!]!
   getImagesById(id: Float!): ProductImages!
   getImagesByProductId(id: Float!): [ProductImages!]
+  getProductCategoriesById(id: Float!): ProductCategories!
+  getProductCategoriesByUuid1c(uuid: String!): ProductCategories!
+  getAllProductsCategoriesBrands: [ProductCategories!]!
   getProductBrandsById(id: Float!): ProductBrands!
+  getProductBrandsByUuid1c(uuid: String!): ProductBrands!
   getAllProductsBrands: [ProductBrands!]!
 }
 
@@ -179,6 +192,8 @@ input LoginUserInput {
 
 type Mutation {
   registration(data: UserInput!): ValidUserDto!
+  createProduct(data: ProductInput!): ProductsDto!
+  createProductBrands(data: ProductBrandsInput!): ProductBrandsDto!
 }
 
 input UserInput {
@@ -189,4 +204,19 @@ input UserInput {
   town: String
   address: String
   telephone: String
+}
+
+input ProductInput {
+  deleted: Boolean
+  name: String
+  code: String
+  price: Float
+  uuid_1c: String!
+  productBrandsId: Float
+  productCategoriesId: Float
+}
+
+input ProductBrandsInput {
+  name: String
+  uuid_1c: String!
 }
