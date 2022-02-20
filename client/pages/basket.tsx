@@ -2,9 +2,10 @@ import { gql } from "@apollo/client";
 import { observer } from "mobx-react";
 import client from "../apollo-client";
 import HeadPage from "../components/headPage";
+import { getMenuPages } from "../lib/globals";
 import styles from '../styles/Home.module.css';
 
-const Home = ({ headData }: any) => {
+const Basket = ({ headData }: any) => {
     return (
         <div>
             <HeadPage title={headData.title} description={headData.description} />
@@ -16,23 +17,13 @@ const Home = ({ headData }: any) => {
 };
 
 
-export default observer(Home);
+export default observer(Basket);
 
 export async function getServerSideProps() {
-    const { data } = await client.query({
-        query: gql`
-        query Pages{
-            getAllPages {
-                id
-                title
-                url
-            }
-        }
-    `,
-    });
+    const pages = await getMenuPages();
     return {
         props: {
-            Pages: data.getAllPages,
+            Pages: pages,
             headData: { title: "Корзина", description: "Описание страницы" },
         },
     };

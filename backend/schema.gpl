@@ -40,16 +40,17 @@ type ProductBrands {
   id: ID!
   name: String!
   uuid_1c: String!
-  product: [Products!]!
 }
 
 """ProductCategories"""
 type ProductCategories {
   id: ID!
   name: String!
+  parentId: Float!
+  order: Float!
   uuid_1c: String!
-  product: [Products!]!
-  parentCategory: [ProductCategories!]!
+  parent: ProductCategories
+  children: [ProductCategories!]!
 }
 
 """ProductImages"""
@@ -62,12 +63,14 @@ type ProductImages {
 
 """Products"""
 type Products {
-  id: ID!
-  deleted: Boolean!
-  name: String!
-  code: String!
-  price: Float!
-  uuid_1c: String!
+  id: ID
+  deleted: Boolean
+  name: String
+  code: String
+  price: Float
+  uuid_1c: String
+  productBrandsId: Float
+  productCategoriesId: Float
   productBrands: ProductBrands!
   productCategories: ProductBrands!
   basketRows: [BasketRows!]!
@@ -139,6 +142,10 @@ type ProductsDto {
   id: Float!
 }
 
+type ProductCategoriesDto {
+  id: Float!
+}
+
 type ProductBrandsDto {
   id: Float!
 }
@@ -174,15 +181,20 @@ type Query {
   getAllPages: [Pages!]!
   getProductById(id: Float!): Products!
   getProductByUuid1c(uuid: String!): Products!
+  getProductsByProductCtatalogeId(id: Float!): [Products!]!
   getAllProducts: [Products!]!
+  getLastNewsProducts: [Products!]!
   getImagesById(id: Float!): ProductImages!
   getImagesByProductId(id: Float!): [ProductImages!]
   getProductCategoriesById(id: Float!): ProductCategories!
   getProductCategoriesByUuid1c(uuid: String!): ProductCategories!
-  getAllProductsCategoriesBrands: [ProductCategories!]!
+  getAllProductsCategories: [ProductCategories!]!
+  getAllRootProductsCategories: [ProductCategories!]!
+  getAllChildresnProductsCategoriesByParent(id: Float!): [ProductCategories!]!
   getProductBrandsById(id: Float!): ProductBrands!
   getProductBrandsByUuid1c(uuid: String!): ProductBrands!
   getAllProductsBrands: [ProductBrands!]!
+  getAllProductsBrandsArrayId: [ProductBrands!]!
 }
 
 input LoginUserInput {
@@ -193,6 +205,7 @@ input LoginUserInput {
 type Mutation {
   registration(data: UserInput!): ValidUserDto!
   createProduct(data: ProductInput!): ProductsDto!
+  createProductCategories(data: ProductCategoriesInput!): ProductCategoriesDto!
   createProductBrands(data: ProductBrandsInput!): ProductBrandsDto!
 }
 
@@ -214,6 +227,12 @@ input ProductInput {
   uuid_1c: String!
   productBrandsId: Float
   productCategoriesId: Float
+}
+
+input ProductCategoriesInput {
+  name: String
+  uuid_1c: String!
+  parentId: Float
 }
 
 input ProductBrandsInput {

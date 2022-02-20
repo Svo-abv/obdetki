@@ -1,0 +1,37 @@
+.mainContainer
+{
+    display: flex;
+     
+}
+
+.subContainer
+{
+    display: flex;
+    flex-wrap: wrap;
+     border: solid 1px gainsboro;
+     padding-top: 15px;
+}
+
+.subSubContainer
+{
+    display: flex;
+    flex-wrap: wrap;
+   
+}
+
+.spiner{
+    margin: 150px auto;
+    color:#1faee9;
+}
+
+.filters{
+    flex-direction: column;
+    margin-left: 30px;
+    border: solid 1px gainsboro;
+    padding: 20px;
+    height: max-content;
+}
+
+.filters select{
+    margin-bottom: 15px;
+}

@@ -39,6 +39,15 @@ export class ProductBrandsResolver {
         return productsBrands;
     }
 
+    @Query(returns => [ProductBrands])
+    async getAllProductsBrandsArrayId(): Promise<any[]> {
+        const productsBrands = await this.productBrandsService.getAllProductsBrandsArrayId();
+        if (!productsBrands) {
+            throw new NotFoundException();
+        }
+        return productsBrands;
+    }
+
     @UseGuards(CheckAuthGuard)
     @Mutation(returns => ProductBrandsDto)
     async createProductBrands(@Args('data') data: ProductBrandsInput): Promise<ProductBrandsDto> {

@@ -10,8 +10,9 @@ import client from '../apollo-client';
 import { gql } from '@apollo/client';
 import { useStore } from '../stores/StoreProvider';
 import { observer } from 'mobx-react';
+import { getMenuPages } from '../lib/globals';
 
-const Home = ({ headData }: any) => {
+const Home = ({ headData, newProducts }: any) => {
   return (
     <div>
       <HeadPage title={headData.title} description={headData.description} />
@@ -20,7 +21,7 @@ const Home = ({ headData }: any) => {
         <SearchBlock />
         <StaticIconsBlock />
         <MiniBannersBlock />
-        <NewProductsBlock />
+        <NewProductsBlock newProducts={newProducts} />
       </main>
     </div>
   )
@@ -30,21 +31,26 @@ const Home = ({ headData }: any) => {
 export default observer(Home);
 
 export async function getServerSideProps() {
-  const { data } = await client.query({
+
+  const pages = await getMenuPages();
+
+  const products = await client.query({
     query: gql`
-        query Pages{
-            getAllPages {
+        query Products{
+            getLastNewsProducts {
+                name
+                code
+                price
                 id
-                title
-                url
             }
         }
     `,
   });
   return {
     props: {
-      Pages: data.getAllPages,
+      Pages: pages,
       headData: { title: "Главная", description: "Описание страницы" },
+      newProducts: products.data.getLastNewsProducts,
     },
   };
 }

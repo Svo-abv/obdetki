@@ -11,28 +11,36 @@ import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGenerate
 export class Products {
 
     @PrimaryGeneratedColumn()
-    @Field(type => ID)
+    @Field(type => ID, { nullable: true })
     id: number;
 
     @Column({ default: false })
-    @Field()
+    @Field({ nullable: true })
     deleted?: boolean;
 
     @Column({ default: null })
-    @Field()
+    @Field({ nullable: true })
     name?: string;
 
     @Column({ default: null })
-    @Field()
+    @Field({ nullable: true })
     code?: string;
 
     @Column({ default: 0 })
-    @Field()
+    @Field({ nullable: true })
     price?: number;
 
     @Column({ unique: true })
-    @Field()
+    @Field({ nullable: true })
     uuid_1c?: string;
+
+    @Column({ default: null })
+    @Field({ nullable: true })
+    productBrandsId?: number;
+
+    @Column({ default: null })
+    @Field({ nullable: true })
+    productCategoriesId?: number;
 
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
     createdAt: Date;
@@ -40,11 +48,11 @@ export class Products {
     @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
     updatedAt: Date;
 
-    @ManyToOne(() => ProductBrands, productBrand => productBrand.id)
+    @ManyToOne(() => ProductBrands, productBrand => productBrand.id, { onDelete: "CASCADE" })
     @Field(type => ProductBrands)
     productBrands?: ProductBrands;
 
-    @ManyToOne(() => ProductCategories, productCategory => productCategory.id)
+    @ManyToOne(() => ProductCategories, productCategory => productCategory.id, { onDelete: "CASCADE" })
     @Field(type => ProductCategories)
     productCategories?: ProductCategories;
 

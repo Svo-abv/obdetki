@@ -1,9 +1,12 @@
-import { NotFoundException } from '@nestjs/common';
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { NotFoundException, UseGuards } from '@nestjs/common';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { CheckAuthGuard } from 'src/utils/guards/checkauth.guards';
+import { ProductCategoriesDto } from './dto/product-categories.dto';
+import { ProductCategoriesInput } from './inputs/create-product-categories.input';
 import { ProductCategories } from './models/product-categories.entity';
 import { ProductCategoriesService } from './product-categories.service';
 
-@Resolver()
+@Resolver(of => ProductCategories)
 export class ProductCategoriesResolver {
     constructor(
         private readonly productCategoriesService: ProductCategoriesService,
@@ -11,7 +14,6 @@ export class ProductCategoriesResolver {
 
     @Query(returns => ProductCategories)
     async getProductCategoriesById(@Args('id') id: number): Promise<ProductCategories> {
-
         const productCategory = await this.productCategoriesService.getProductCategoriesById(id);
         if (!productCategory) {
             throw new NotFoundException(id);
@@ -29,12 +31,47 @@ export class ProductCategoriesResolver {
     }
 
     @Query(returns => [ProductCategories])
-    async getAllProductsCategoriesBrands(): Promise<ProductCategories[]> {
-
-        const productsCategories = await this.productCategoriesService.getAllProductsCategoriesBrands();
+    async getAllProductsCategories(): Promise<ProductCategories[]> {
+        const productsCategories = await this.productCategoriesService.getAllProductsCategories();
         if (!productsCategories) {
             throw new NotFoundException();
         }
         return productsCategories;
     }
+
+
+    @Query(returns => [ProductCategories])
+    async getAllRootProductsCategories(): Promise<ProductCategories[]> {
+        const productsCategories = await this.productCategoriesService.getAllRootProductsCategories();
+        if (!productsCategories) {
+            throw new NotFoundException();
+        }
+        return productsCategories;
+    }
+
+    @Query(returns => [ProductCategories])
+    async getAllChildresnProductsCategoriesByParent(@Args('id') id: number): Promise<ProductCategories[]> {
+        const productsCategories = await this.productCategoriesService.getAllChildresnProductsCategoriesByParent(id);
+        if (!productsCategories) {
+            throw new NotFoundException();
+        }
+        return productsCategories;
+    }
+
+    @ResolveField('children', returns => [ProductCategories])
+    async resolveChildrenProductCategory(@Parent() row: ProductCategories) {
+        const { id } = row;
+        const productsCategories = await this.productCategoriesService.getAllChildresnProductsCategoriesByParent(id);
+        if (!productsCategories) {
+            throw new NotFoundException();
+        }
+        return productsCategories;
+    }
+
+    @UseGuards(CheckAuthGuard)
+    @Mutation(returns => ProductCategoriesDto)
+    async createProductCategories(@Args('data') data: ProductCategoriesInput): Promise<ProductCategoriesDto> {
+        return this.productCategoriesService.createProductCategories(data);
+    }
+
 }

@@ -1,0 +1,18 @@
+.cardProduct{
+    width: 190px;
+    margin: 15px auto;
+    border: none;
+}
+
+.cardProduct .card-text{
+    text-align: center;
+    text-transform: uppercase;
+    color: black;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.cardProduct .btn{
+    position: relative;
+    bottom: 5px;
+}

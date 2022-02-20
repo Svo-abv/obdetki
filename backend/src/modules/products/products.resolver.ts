@@ -35,8 +35,26 @@ export class ProductsResolver {
     }
 
     @Query(returns => [Products])
+    async getProductsByProductCtatalogeId(@Args('id') id: number): Promise<Products[]> {
+        const products = await this.productsService.getProductsByProductCtatalogeId(id);
+        if (!products) {
+            throw new NotFoundException(id);
+        }
+        return products;
+    }
+
+    @Query(returns => [Products])
     async getAllProducts(): Promise<Products[]> {
         const products = await this.productsService.getAllProducts();
+        if (!products) {
+            throw new NotFoundException();
+        }
+        return products;
+    }
+
+    @Query(returns => [Products])
+    async getLastNewsProducts(): Promise<Products[]> {
+        const products = await this.productsService.getLastNewsProducts();
         if (!products) {
             throw new NotFoundException();
         }

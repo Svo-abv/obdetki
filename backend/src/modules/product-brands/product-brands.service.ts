@@ -23,6 +23,15 @@ export class ProductBrandsService {
         return await this.productsBrandsRepository.find();
     }
 
+    async getAllProductsBrandsArrayId(): Promise<any[]> {
+
+        const ids = await this.productsBrandsRepository
+            .createQueryBuilder()
+            .select("id")
+            .getRawMany();
+        return ids;
+    }
+
     async createProductBrands(data: ProductBrandsInput): Promise<ProductsDto> {
         return await this.productsBrandsRepository.save(data);
     }

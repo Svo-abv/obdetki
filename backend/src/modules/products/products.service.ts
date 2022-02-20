@@ -18,11 +18,23 @@ export class ProductsService {
         return await this.productRepository.findOne(id);
     }
 
+    async getProductsByProductCtatalogeId(id: number): Promise<Products[]> {
+
+        const products = await this.productRepository.createQueryBuilder("product")
+            .where(`product.productCategoriesId in (select id from product_categories where "parentId"=${id}) or product.productCategoriesId=${id}`)
+            .orderBy("product.productCategoriesId", 'ASC')
+            .getMany();
+        return products;
+    }
     async getProductByUuid1c(uuid: string): Promise<Products> {
         return await this.productRepository.findOne({ where: { uuid_1c: uuid } });
     }
     async getAllProducts(): Promise<Products[]> {
         return await this.productRepository.find();
+    }
+
+    async getLastNewsProducts(): Promise<Products[]> {
+        return await this.productRepository.find({ order: { updatedAt: "DESC" }, take: 15 });
     }
 
     async getBrandByProductId(id: number): Promise<ProductBrands> {

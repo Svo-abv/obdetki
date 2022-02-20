@@ -18,7 +18,7 @@ export class ProductBrands {
     @Field()
     uuid_1c?: string;
 
-    @OneToMany(() => Products, product => product.productBrands)
-    @Field(type => [Products])
-    product: Products[];
+    // @OneToMany(() => Products, product => product.productBrandsId)
+    // @Field(type => [Products])
+    // product: Products[];
 }

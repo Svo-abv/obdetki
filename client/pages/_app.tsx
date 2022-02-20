@@ -7,25 +7,27 @@ import ContactsTopBlock from '../components/contactsTopBlock';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MainLogoBlock from '../components/mainLogoBlock';
 import NavigationMenu from '../components/navigationMenu';
-import { StoreProvider, useStore } from '../stores/StoreProvider';
+import SSRProvider from 'react-bootstrap/SSRProvider';
+import { ApolloProvider } from '@apollo/client';
+import client from '../apollo-client';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const store = useStore();
-  store.pages = pageProps.Pages;
-
   return (
-
     <div className={styles.container}>
-      <StoreProvider {...pageProps}>
-        <Head>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <ContactsTopBlock />
-        <MainLogoBlock />
-        <NavigationMenu props={pageProps} />
-        <Component {...pageProps} />
-        <FooterPage />
-      </StoreProvider>
+      <SSRProvider>
+        <ApolloProvider client={client}>
+          {/* <StoreProvider {...pageProps}> */}
+          <Head>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          <ContactsTopBlock />
+          <MainLogoBlock />
+          <NavigationMenu props={pageProps} />
+          <Component {...pageProps} />
+          <FooterPage />
+          {/* </StoreProvider> */}
+        </ApolloProvider>
+      </SSRProvider>
     </div>
   );
 }
