@@ -52,6 +52,30 @@ export async function getProductsByIdCategory(id: number): Promise<any> {
             uuid_1c
             deleted
             id
+            productImages {
+      url
+    }
+        }
+        }
+        `,
+    });
+    return data;
+}
+
+
+export async function getSearchProducts(search: string | string[]): Promise<any> {
+    const { data } = await client.query({
+        query: gql`
+        query{
+        getSearchProducts(search: "${search}") {
+            name
+            code
+            price
+            uuid_1c
+            deleted
+            idproductImages {
+      url
+    }
         }
         }
         `,

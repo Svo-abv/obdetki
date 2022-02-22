@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Row, Col, Button, FormControl, InputGroup } from 'react-bootstrap';
+import { Container, Row, Col, Button, FormControl, InputGroup, Form } from 'react-bootstrap';
+import { Envelope, Instagram } from 'react-bootstrap-icons';
 import classes from '../styles/searchBlock.module.css'
 
 const SearchBlock = () => {
@@ -7,19 +8,28 @@ const SearchBlock = () => {
         <Container className={classes.searchBlock}>
             <Row>
                 <Col className={classes.searchCol} >
-                    <InputGroup>
-                        <FormControl
-                            type="text"
-                            placeholder="введите для поиска ..."
-                            aria-label="введите для поиска ..."
-                            aria-describedby="btnGroupAddon"
-                        />
-                        <Button variant="outline-secondary" id="button-addon1">найти</Button>
-                    </InputGroup>
+                    <Form action='/magazine' method='GET'>
+                        <InputGroup>
+                            <FormControl
+                                name='search'
+                                type="text"
+                                placeholder="введите для поиска ..."
+                                aria-label="введите для поиска ..."
+                                aria-describedby="btnGroupAddon"
+                            />
+                            <Button variant="outline-secondary" id="button-addon1" type='submit'>найти</Button>
+                        </InputGroup>
+                    </Form>
                 </Col>
-                <Col className={classes.socialIconsCol} xs lg="2">
+                <Col className={classes.socialIconsCol} xs lg="3">
                     <Row>
                         <Col><h5>СОЦ.СЕТИ:</h5></Col>
+                        <Col>
+                            <a href="mailto:master@obdetki.ru"><Envelope size={24} /></a>
+                        </Col>
+                        <Col>
+                            <a href="https://www.instagram.com/obdetki.ru/"><Instagram size={24} /></a>
+                        </Col>
                         <Col>
 
                         </Col>

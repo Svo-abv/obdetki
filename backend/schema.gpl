@@ -58,6 +58,8 @@ type ProductImages {
   id: ID!
   url: String!
   default: Boolean!
+  uuid_1c: String
+  productId: Float
   product: Products!
 }
 
@@ -68,14 +70,16 @@ type Products {
   name: String
   code: String
   price: Float
+  oldPrice: Float
   uuid_1c: String
   productBrandsId: Float
   productCategoriesId: Float
+  documentTsv: String
   productBrands: ProductBrands!
   productCategories: ProductBrands!
   basketRows: [BasketRows!]!
   ordersRows: [OrdersRows!]!
-  productImages: [ProductImages!]!
+  productImages: ProductImages
 }
 
 """BasketRows"""
@@ -142,6 +146,15 @@ type ProductsDto {
   id: Float!
 }
 
+type ProductImagesDto {
+  id: Float!
+}
+
+type ProductImageUploadType {
+  success: Boolean
+  filename: String
+}
+
 type ProductCategoriesDto {
   id: Float!
 }
@@ -184,8 +197,10 @@ type Query {
   getProductsByProductCtatalogeId(id: Float!): [Products!]!
   getAllProducts: [Products!]!
   getLastNewsProducts: [Products!]!
+  getSearchProducts(search: String!): [Products!]!
   getImagesById(id: Float!): ProductImages!
   getImagesByProductId(id: Float!): [ProductImages!]
+  getImagesByUuid1c(uuid: String!): ProductImages!
   getProductCategoriesById(id: Float!): ProductCategories!
   getProductCategoriesByUuid1c(uuid: String!): ProductCategories!
   getAllProductsCategories: [ProductCategories!]!
@@ -205,6 +220,8 @@ input LoginUserInput {
 type Mutation {
   registration(data: UserInput!): ValidUserDto!
   createProduct(data: ProductInput!): ProductsDto!
+  UploadProductImage(file: ProductImageUploadInput!): ProductImageUploadType
+  CreateProductImages(data: ProductImagesInput!): ProductImagesDto!
   createProductCategories(data: ProductCategoriesInput!): ProductCategoriesDto!
   createProductBrands(data: ProductBrandsInput!): ProductBrandsDto!
 }
@@ -227,6 +244,20 @@ input ProductInput {
   uuid_1c: String!
   productBrandsId: Float
   productCategoriesId: Float
+}
+
+input ProductImageUploadInput {
+  file: Upload
+}
+
+"""File upload scalar type"""
+scalar Upload
+
+input ProductImagesInput {
+  url: String
+  uuid_1c: String!
+  productId: Float
+  default: Boolean = false
 }
 
 input ProductCategoriesInput {

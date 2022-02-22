@@ -8,7 +8,7 @@ import classes from '../styles/NavigationMenublock.module.css'
 const NavigationMenu = ({ props }: any) => {
     return (
         <Navbar className={classes.menuContainer} variant="dark" sticky="top" >
-            <Container>
+            <Container className={classes.rootLink}>
                 <Nav className="me-auto">
                     <Nav.Link href="/">Главная</Nav.Link>
                     {
@@ -23,7 +23,8 @@ const NavigationMenu = ({ props }: any) => {
                         ))
                     }
                     {
-                        props.Pages && props.Pages.getAllPages.map((item: any) => (<Nav.Link key={item.id} href={item.url}>{item.title}</Nav.Link>))
+                        props.Pages && props.Pages.getAllPages.map((item: any) => (
+                            <Nav.Link key={item.id} href={item.url}>{item.title}</Nav.Link>))
                     }
                 </Nav>
             </Container>

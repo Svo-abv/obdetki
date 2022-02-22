@@ -61,6 +61,16 @@ export class ProductsResolver {
         return products;
     }
 
+
+    @Query(returns => [Products])
+    async getSearchProducts(@Args('search') search: string): Promise<Products[]> {
+        const products = await this.productsService.getSearchProducts(search);
+        if (!products) {
+            throw new NotFoundException();
+        }
+        return products;
+    }
+
     @ResolveField('productBrands', returns => ProductBrands)
     async getBrandByProductId(@Parent() product: Products) {
         const { id } = product;
@@ -73,10 +83,10 @@ export class ProductsResolver {
         return this.productsService.getCategoryByProductId(id);
     }
 
-    @ResolveField('productImages', returns => [ProductImages])
+    @ResolveField('productImages', returns => ProductImages, { nullable: true })
     async getImagesByProductId(@Parent() product: Products) {
         const { id } = product;
-        return this.productImagesService.getImagesByProductId(id);
+        return this.productImagesService.getDefaultImagesByProductId(id);
     }
 
     @UseGuards(CheckAuthGuard)

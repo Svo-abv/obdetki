@@ -18,6 +18,14 @@ export class ProductImages {
     @Field()
     default: boolean;
 
+    @Column({ unique: true })
+    @Field({ nullable: true })
+    uuid_1c?: string;
+
+    @Column({ nullable: true })
+    @Field({ nullable: true })
+    productId?: number;
+
     @ManyToOne(() => Products, product => product.id)
     @Field(type => Products)
     product: Products;

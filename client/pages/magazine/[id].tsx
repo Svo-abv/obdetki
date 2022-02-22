@@ -10,18 +10,20 @@ import ProductsList from "../../components/productsList";
 import SearchBlock from "../../components/searchBlock";
 import classes from '../../styles/Magazine.module.css'
 
-const Home = ({ headData, brandId }: any) => {
+const Home = ({ headData, brandId, products, categories }: any) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [productList, setProductList] = useState([]);
-    const [productCategoryList, setProductCategoryList] = useState([]);
+    const [productList, setProductList] = useState(products);
+    const [productCategoryList, setProductCategoryList] = useState(categories);
 
     useEffect(() => {
-        getAllChildresnProductsCategoriesByParent(brandId).then((data) =>
-            setProductCategoryList(data.getAllChildresnProductsCategoriesByParent));
 
-        getProductsByIdCategory(brandId)
-            .then((data) => { setProductList(data.getProductsByProductCtatalogeId); })
-            .finally(() => setIsLoading(false));
+        // getAllChildresnProductsCategoriesByParent(brandId).then((data) =>
+        //     setProductCategoryList(data.getAllChildresnProductsCategoriesByParent));
+
+        // getProductsByIdCategory(brandId)
+        //     .then((data) => { setProductList(data.getProductsByProductCtatalogeId); })
+        //     .finally(() => setIsLoading(false));
+        setIsLoading(false)
     }, []);
 
     const onClikHandle = (category: any) => {
@@ -98,37 +100,6 @@ const Home = ({ headData, brandId }: any) => {
 
 export default observer(Home);
 
-// export async function getStaticPaths() {
-
-//     const { data } = await client.query({
-//         query: gql`
-//         query getAllProductsBrandsArrayId{
-//             getAllProductsBrandsArrayId {
-//                 id
-//             }
-//         }
-//     `,
-//     });
-
-//     const { getAllProductsBrandsArrayId } = data;
-
-//     const outputs: any = [];
-//     getAllProductsBrandsArrayId.map((item: any) => (outputs.push({ params: { id: item.id } })));
-//     return {
-//         paths: outputs,
-//         fallback: false
-//     };
-
-// }
-
-// export async function getStaticProps({ params }: any) {
-//     const postData = params.id;
-//     return {
-//         props: {
-//             postData
-//         }
-//     }
-// }
 export async function getServerSideProps({ params }: any) {
     const { id } = params;
     const pages = await getMenuPages();
@@ -143,11 +114,19 @@ export async function getServerSideProps({ params }: any) {
     `,
     });
 
+    const { getProductsByProductCtatalogeId } = await getProductsByIdCategory(id);
+    const products = getProductsByProductCtatalogeId;// ? rawProducts.getAllChildresnProductsCategoriesByParent : [];
+
+    const rawCategories = await getAllChildresnProductsCategoriesByParent(id);
+    const categories = rawCategories.getAllChildresnProductsCategoriesByParent;// ? rawCategories.getProductsByProductCtatalogeId : [];
+
     return {
         props: {
             Pages: pages,
             headData: { title: data.getProductCategoriesById.name, description: "Описание страницы" },
             brandId: id,
+            products: products,
+            categories: categories,
         },
     };
 }

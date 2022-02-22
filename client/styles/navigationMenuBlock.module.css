@@ -2,3 +2,9 @@
 background-color: #1faee9;
 margin-top: 20px;
 }
+
+.rootLink > div > a, .rootLink > div > div >  a {
+    color:rgba(255,255,255,.9);
+    text-transform: uppercase;
+    font-size: 14px;
+}

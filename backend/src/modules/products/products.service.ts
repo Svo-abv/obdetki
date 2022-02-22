@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 import { BasketRows } from '../basket-rows/models/basket-rows.entity';
 import { ProductBrands } from '../product-brands/models/product-brands.entity';
 import { ProductImagesDto } from '../product-images/dto/product-images.dto';
@@ -31,6 +31,18 @@ export class ProductsService {
     }
     async getAllProducts(): Promise<Products[]> {
         return await this.productRepository.find();
+    }
+
+    async getSearchProducts(search: string): Promise<Products[]> {
+
+        const products = await getConnection()
+            .createQueryBuilder()
+            .select()
+            .from(`(select ts_rank_cd(p."documentTsv", plainto_tsquery('${search}')) AS score,p.* FROM products as p)`, 's')
+            .where('s.score<>0')
+            .orderBy('s.score', 'DESC')
+            .getRawMany();
+        return await products;
     }
 
     async getLastNewsProducts(): Promise<Products[]> {

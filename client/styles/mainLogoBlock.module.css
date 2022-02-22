@@ -37,3 +37,9 @@
     text-align: right ;
     margin: auto;
 }
+
+.cartBadge{
+    position: relative;
+    top: -15px;
+    right: -50px;
+}

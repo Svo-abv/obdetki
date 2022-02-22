@@ -3,9 +3,6 @@
     padding: 15px 5px;
     border-bottom: 1px solid #D3D3D3;
 }
-.searchBlock input{
-    /* margin-right:10px; */
-}
 
 .earchCol,.socialIconsCol{
     margin: auto;
@@ -13,4 +10,11 @@
 
 .socialIconsCol h5{
     margin: 0;
+}
+.socialIconsCol a {
+    color:black !important;
+}
+.socialIconsCol a:hover,.socialIconsCol a:focus {
+  color: #0073aa !important;
+  transition: all 0.3s ease 0s;
 }

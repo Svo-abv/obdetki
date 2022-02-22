@@ -1,10 +1,11 @@
 import { ObjectType, Field, ID } from "@nestjs/graphql";
+import { type } from "os";
 import { BasketRows } from "src/modules/basket-rows/models/basket-rows.entity";
 import { OrdersRows } from "src/modules/orders-rows/models/orders-rows.entity";
 import { ProductBrands } from "src/modules/product-brands/models/product-brands.entity";
 import { ProductCategories } from "src/modules/product-categories/models/product-categories.entity";
 import { ProductImages } from "src/modules/product-images/models/product-images.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 @ObjectType({ description: 'Products' })
@@ -30,6 +31,10 @@ export class Products {
     @Field({ nullable: true })
     price?: number;
 
+    @Column({ default: 0 })
+    @Field({ nullable: true })
+    oldPrice?: number;
+
     @Column({ unique: true })
     @Field({ nullable: true })
     uuid_1c?: string;
@@ -41,6 +46,11 @@ export class Products {
     @Column({ default: null })
     @Field({ nullable: true })
     productCategoriesId?: number;
+
+    @Column({ type: "tsvector", default: null, },)
+    @Index("idx_document_tsv", { synchronize: false })
+    @Field({ nullable: true })
+    documentTsv?: string;
 
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
     createdAt: Date;
@@ -64,8 +74,8 @@ export class Products {
     @Field(type => [OrdersRows])
     ordersRows?: OrdersRows[];
 
-    @OneToMany(() => ProductImages, productImages => productImages.product)
-    @Field(type => [ProductImages])
-    productImages?: ProductImages[];
+    @OneToMany(() => ProductImages, productImages => productImages.productId, { onDelete: "CASCADE" })
+    @Field(type => ProductImages, { nullable: true })
+    productImages?: ProductImages;
 
 }

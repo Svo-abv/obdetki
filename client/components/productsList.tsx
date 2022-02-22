@@ -1,3 +1,4 @@
+import { env } from 'process';
 import React from 'react';
 import { Container, Card, Button } from 'react-bootstrap';
 import classes from '../styles/ProductsList.module.css'
@@ -13,11 +14,18 @@ const ProductsList = (newProducts: IProductsList) => {
             {
                 newProducts && newProducts.products.map((product: any) => (
                     <Card className={classes.cardProduct} key={product.id} >
-                        <Card.Img variant="top" src="/images/placeholder.png" />
+                        {
+                            product.productImages ? <Card.Img variant="top" src={'http://localhost:5000' + product.productImages.url} />
+                                : <Card.Img variant="top" src="/images/placeholder.png" />
+                        }
                         <Card.Body>
                             <Card.Title>{product.code}</Card.Title>
                             <Card.Text>
                                 {product.name}
+                            </Card.Text>
+                            <Card.Text>
+                                {product.price}
+                                <span> ₽</span>
                             </Card.Text>
                             <Button variant="primary">в корзину</Button>
                         </Card.Body>

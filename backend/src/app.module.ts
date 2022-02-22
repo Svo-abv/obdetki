@@ -31,15 +31,21 @@ import { ProductProperties } from './modules/product-properties/models/product-p
 import { ProductPropertiesRows } from './modules/product-properties-rows/models/product-properties-rows.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+//import { Upload } from 'graphql-upload';
+import { Upload } from './utils/types/Upload.scalar';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: ['.env.local',],
     }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRoot({
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gpl',
+      uploads: {
+        maxFileSize: 20000000,
+        maxFiles: 5,
+      },
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -67,5 +73,6 @@ import { join } from 'path';
     ProductImagesModule, ProductPropertiesModule,
     ProductPropertiesRowsModule,
   ],
+  providers: [Upload,],
 })
 export class AppModule { }

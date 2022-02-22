@@ -1,0 +1,1 @@
+export default new URL("../static/images/", "file://F:/Programming/JS/obdetki/backend/src/");
