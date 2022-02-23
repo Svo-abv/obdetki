@@ -1,0 +1,27 @@
+.formGroup{
+display: flex;
+margin: 25px 0 15px;
+}
+
+.input{
+    width:100px;
+    margin-right: 15px;;
+}
+
+.preview{
+    opacity: 0.7;
+    cursor: pointer;
+    width: 150px;
+}
+
+.preview:hover{
+    opacity: 1;
+}
+
+.btn{
+    background-color: #1faee9;
+    border: none;
+}
+.cardProduct .btn:hover{
+    background-color: #0d6efd;
+}

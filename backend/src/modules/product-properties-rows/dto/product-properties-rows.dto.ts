@@ -1,3 +1,6 @@
+import { Field, ObjectType } from "@nestjs/graphql";
+
+@ObjectType()
 export class ProductPropertiesRowsDto {
-    id: number;
+    @Field() id: number;
 }

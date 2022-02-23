@@ -26,15 +26,16 @@ export class ProductsService {
             .getMany();
         return products;
     }
+
     async getProductByUuid1c(uuid: string): Promise<Products> {
         return await this.productRepository.findOne({ where: { uuid_1c: uuid } });
     }
+
     async getAllProducts(): Promise<Products[]> {
-        return await this.productRepository.find();
+        return await this.productRepository.find({ order: { updatedAt: 'DESC' } });
     }
 
     async getSearchProducts(search: string): Promise<Products[]> {
-
         const products = await getConnection()
             .createQueryBuilder()
             .select()
@@ -62,5 +63,4 @@ export class ProductsService {
     async createProduct(data: ProductInput): Promise<ProductsDto> {
         return await this.productRepository.save(data);
     }
-
 }

@@ -4,6 +4,8 @@ import { CheckAuthGuard } from 'src/utils/guards/checkauth.guards';
 import { ProductBrands } from '../product-brands/models/product-brands.entity';
 import { ProductImages } from '../product-images/models/product-images.entity';
 import { ProductImagesService } from '../product-images/product-images.service';
+import { ProductPropertiesRows } from '../product-properties-rows/models/product-properties-rows.entity';
+import { ProductPropertiesRowsService } from '../product-properties-rows/product-properties-rows.service';
 import { ProductsDto } from './dto/products.dto';
 import { ProductInput } from './inputs/create-product-input';
 import { Products } from './models/products.entity';
@@ -14,6 +16,7 @@ export class ProductsResolver {
     constructor(
         private readonly productsService: ProductsService,
         private readonly productImagesService: ProductImagesService,
+        private readonly productProperyRowsService: ProductPropertiesRowsService,
     ) { }
 
     @Query(returns => Products)
@@ -87,6 +90,12 @@ export class ProductsResolver {
     async getImagesByProductId(@Parent() product: Products) {
         const { id } = product;
         return this.productImagesService.getDefaultImagesByProductId(id);
+    }
+
+    @ResolveField('productPropertiesRows', returns => [ProductPropertiesRows], { nullable: true })
+    async getPropertiesRowsProductId(@Parent() product: Products) {
+        const { id } = product;
+        return this.productProperyRowsService.getProductPropertyRowByProductId(id);
     }
 
     @UseGuards(CheckAuthGuard)

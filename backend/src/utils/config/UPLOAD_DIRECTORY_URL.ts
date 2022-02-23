@@ -1,1 +1,1 @@
-export default new URL("../static/images/", "file://F:/Programming/JS/obdetki/backend/src/");
+export default new URL("../../client/public/images/", "file://F:/Programming/JS/obdetki/backend/src/");

@@ -63,6 +63,23 @@ type ProductImages {
   product: Products!
 }
 
+"""ProductProperties"""
+type ProductProperties {
+  id: ID!
+  name: String!
+  productPropertiesRows: [ProductPropertiesRows!]!
+}
+
+"""ProductPropertiesRows"""
+type ProductPropertiesRows {
+  id: ID
+  value: String
+  propertyId: Float
+  productId: Float
+  product: Products
+  property: ProductProperties
+}
+
 """Products"""
 type Products {
   id: ID
@@ -75,11 +92,14 @@ type Products {
   productBrandsId: Float
   productCategoriesId: Float
   documentTsv: String
+  createdAt: DateTime
+  updatedAt: DateTime
   productBrands: ProductBrands!
   productCategories: ProductBrands!
   basketRows: [BasketRows!]!
   ordersRows: [OrdersRows!]!
   productImages: ProductImages
+  productPropertiesRows: [ProductPropertiesRows!]
 }
 
 """BasketRows"""
@@ -163,20 +183,12 @@ type ProductBrandsDto {
   id: Float!
 }
 
-"""ProductPropertiesRows"""
-type ProductPropertiesRows {
-  id: ID!
-  value: String!
-  product: Products!
-  property: ProductProperties!
+type ProductPropertiesDto {
+  id: Float!
 }
 
-"""ProductProperties"""
-type ProductProperties {
-  id: ID!
-  name: String!
-  uuid_1c: String!
-  productPropertiesRows: [ProductPropertiesRows!]!
+type ProductPropertiesRowsDto {
+  id: Float!
 }
 
 type Query {
@@ -210,6 +222,13 @@ type Query {
   getProductBrandsByUuid1c(uuid: String!): ProductBrands!
   getAllProductsBrands: [ProductBrands!]!
   getAllProductsBrandsArrayId: [ProductBrands!]!
+  getProductPropertyById(id: Float!): ProductProperties!
+  getProductPropertyByName(name: String!): ProductProperties!
+  getAllProductProperties: [ProductProperties!]!
+  getProductPropertyRowById(id: Float!): ProductPropertiesRows!
+  getProductPropertyRowByProductId(id: Float!): [ProductPropertiesRows!]!
+  getProductPropertyRowByProductIdAndProperyId(productId: Float!, propertyId: Float!): ProductPropertiesRows
+  getAllProductPropertiesRows: [ProductPropertiesRows!]!
 }
 
 input LoginUserInput {
@@ -224,6 +243,8 @@ type Mutation {
   CreateProductImages(data: ProductImagesInput!): ProductImagesDto!
   createProductCategories(data: ProductCategoriesInput!): ProductCategoriesDto!
   createProductBrands(data: ProductBrandsInput!): ProductBrandsDto!
+  createProductProperty(data: ProductPropertiesInput!): ProductPropertiesDto!
+  createProductPropertyRows(data: ProductPropertiesRowsInput!): ProductPropertiesRowsDto!
 }
 
 input UserInput {
@@ -269,4 +290,14 @@ input ProductCategoriesInput {
 input ProductBrandsInput {
   name: String
   uuid_1c: String!
+}
+
+input ProductPropertiesInput {
+  name: String
+}
+
+input ProductPropertiesRowsInput {
+  value: String
+  propertyId: Float
+  productId: Float
 }

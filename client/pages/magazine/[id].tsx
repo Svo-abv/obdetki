@@ -10,7 +10,7 @@ import ProductsList from "../../components/productsList";
 import SearchBlock from "../../components/searchBlock";
 import classes from '../../styles/Magazine.module.css'
 
-const Home = ({ headData, brandId, products, categories }: any) => {
+const CtegoriesItem = ({ headData, brandId, products, categories }: any) => {
     const [isLoading, setIsLoading] = useState(true);
     const [productList, setProductList] = useState(products);
     const [productCategoryList, setProductCategoryList] = useState(categories);
@@ -98,7 +98,7 @@ const Home = ({ headData, brandId, products, categories }: any) => {
 };
 
 
-export default observer(Home);
+export default CtegoriesItem;
 
 export async function getServerSideProps({ params }: any) {
     const { id } = params;

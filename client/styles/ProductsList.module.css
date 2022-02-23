@@ -1,7 +1,12 @@
 .cardProduct{
-    width: 190px;
+    width: 195px;
     margin: 15px auto;
     border: none;
+    cursor: pointer;
+}
+
+.subCard{
+ padding: 5px;
 }
 
 .cardProduct .card-text{
@@ -10,9 +15,20 @@
     color: black;
     font-weight: bold;
     font-size: 1em;
+  
+}
+.text{
+  min-height: 145px;
 }
 
 .cardProduct .btn{
-    position: relative;
-    bottom: 5px;
+    background-color: #1faee9;
+    border: none;
+}
+.cardProduct .btn:hover{
+    background-color: #0d6efd;
+}
+.cardProduct .price{
+    font-weight: 600;
+    text-align:right;
 }

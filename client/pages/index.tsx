@@ -6,11 +6,7 @@ import SearchBlock from '../components/searchBlock';
 import StaticIconsBlock from '../components/staticIconsBlock';
 import MiniBannersBlock from '../components/miniBannersBlock';
 import NewProductsBlock from '../components/newProductsBlock';
-import client from '../apollo-client';
-import { gql } from '@apollo/client';
-import { useStore } from '../stores/StoreProvider';
-import { observer } from 'mobx-react';
-import { getMenuPages } from '../lib/globals';
+import { getLatest20Products, getMenuPages } from '../lib/globals';
 
 const Home = ({ headData, newProducts }: any) => {
   return (
@@ -28,29 +24,19 @@ const Home = ({ headData, newProducts }: any) => {
 };
 
 
-export default observer(Home);
+export default Home;
 
 export async function getServerSideProps() {
 
   const pages = await getMenuPages();
 
-  const products = await client.query({
-    query: gql`
-        query Products{
-            getLastNewsProducts {
-                name
-                code
-                price
-                id
-            }
-        }
-    `,
-  });
+  const products = await getLatest20Products();
+
   return {
     props: {
       Pages: pages,
       headData: { title: "Главная", description: "Описание страницы" },
-      newProducts: products.data.getLastNewsProducts,
+      newProducts: products.getLastNewsProducts,
     },
   };
 }

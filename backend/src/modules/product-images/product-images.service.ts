@@ -19,7 +19,7 @@ export class ProductImagesService {
         return await this.productImagesRepository.findOne({ where: { uuid_1c: uuid } });
     }
     async getImagesByProductId(id: number): Promise<ProductImages[]> {
-        return await this.productImagesRepository.find({ where: { productId: id } });
+        return await this.productImagesRepository.find({ where: { productId: id }, order: { default: 'DESC' } });
     }
 
     async getDefaultImagesByProductId(id: number): Promise<ProductImages> {

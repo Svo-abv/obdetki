@@ -9,6 +9,8 @@ import MainLogoBlock from '../components/mainLogoBlock';
 import NavigationMenu from '../components/navigationMenu';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 import { ApolloProvider } from '@apollo/client';
+
+
 import client from '../apollo-client';
 
 function MyApp({ Component, pageProps }: AppProps) {

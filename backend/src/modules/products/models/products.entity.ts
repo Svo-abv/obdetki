@@ -5,6 +5,7 @@ import { OrdersRows } from "src/modules/orders-rows/models/orders-rows.entity";
 import { ProductBrands } from "src/modules/product-brands/models/product-brands.entity";
 import { ProductCategories } from "src/modules/product-categories/models/product-categories.entity";
 import { ProductImages } from "src/modules/product-images/models/product-images.entity";
+import { ProductPropertiesRows } from "src/modules/product-properties-rows/models/product-properties-rows.entity";
 import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
@@ -53,9 +54,11 @@ export class Products {
     documentTsv?: string;
 
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+    @Field({ nullable: true })
     createdAt: Date;
 
     @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+    @Field({ nullable: true })
     updatedAt: Date;
 
     @ManyToOne(() => ProductBrands, productBrand => productBrand.id, { onDelete: "CASCADE" })
@@ -77,5 +80,9 @@ export class Products {
     @OneToMany(() => ProductImages, productImages => productImages.productId, { onDelete: "CASCADE" })
     @Field(type => ProductImages, { nullable: true })
     productImages?: ProductImages;
+
+    @OneToMany(() => ProductPropertiesRows, prop => prop.productId, { onDelete: "CASCADE" })
+    @Field(type => [ProductPropertiesRows], { nullable: true })
+    productPropertiesRows?: [ProductPropertiesRows];
 
 }
