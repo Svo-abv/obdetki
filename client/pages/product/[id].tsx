@@ -1,40 +1,17 @@
 import { observer } from "mobx-react";
-import { getMenuPages, getProductsByIdCategory, getAllChildresnProductsCategoriesByParent, getProductById, getProductImagesByProductId, getPairsInBox } from "../../lib/globals";
+import { getMenuPages, getProductById, getProductImagesByProductId, getPairsInBox } from "../../lib/globals";
 import styles from '../../styles/Home.module.css';
-import client from "../../apollo-client";
 import HeadPage from "../../components/headPage";
-import { gql } from "@apollo/client";
 import { Button, Col, Container, Form, FormGroup, ListGroup, Row, Spinner, Table } from "react-bootstrap";
-import { useEffect, useState } from "react";
-import ProductsList from "../../components/productsList";
+import { useContext, useState } from "react";
 import SearchBlock from "../../components/searchBlock";
 import classes from '../../styles/Product.module.css'
 import Image from "next/image";
+import { Context } from "../_app";
 
 const ProductItem = ({ headData, productId, product, images, pairs }: any) => {
     const [mainImage, setMainImage] = useState(product.productImages.url);
-    // const [isLoading, setIsLoading] = useState(true);
-    // const [productList, setProductList] = useState(products);
-    // const [productCategoryList, setProductCategoryList] = useState(categories);
-
-    //useEffect(() => {
-
-    // getAllChildresnProductsCategoriesByParent(brandId).then((data) =>
-    //     setProductCategoryList(data.getAllChildresnProductsCategoriesByParent));
-
-    // getProductsByIdCategory(brandId)
-    //     .then((data) => { setProductList(data.getProductsByProductCtatalogeId); })
-    //     .finally(() => setIsLoading(false));
-    //     setIsLoading(false)
-    // }, []);
-
-    // const onClikHandle = (category: any) => {
-    //     setIsLoading(true);
-    //     console.log(category.id);
-    //     getProductsByIdCategory(category.id)
-    //         .then((data) => { setProductList(data.getProductsByProductCtatalogeId); })
-    //         .finally(() => setIsLoading(false));
-    // }
+    const { user } = useContext(Context);
 
     return (
         <div>
@@ -63,7 +40,9 @@ const ProductItem = ({ headData, productId, product, images, pairs }: any) => {
                             <h5>Цена: {product.price * pairs}<span>.00 ₽</span> за короб</h5>
                             <Form.Group className={classes.formGroup}>
                                 <Form.Control type="number" defaultValue={pairs} min={pairs} step={pairs} className={classes.input} />
-                                <Button className={classes.btn}>в корзину</Button>
+                                {
+                                    user.isAuth && (<Button className={classes.btn}>в корзину</Button>)
+                                }
                             </Form.Group>
                             {
                                 product.productPropertiesRows.length > 0 && (
@@ -93,7 +72,7 @@ const ProductItem = ({ headData, productId, product, images, pairs }: any) => {
     )
 };
 
-export default ProductItem;
+export default observer(ProductItem);
 
 export async function getServerSideProps({ params }: any) {
     const { id } = params;

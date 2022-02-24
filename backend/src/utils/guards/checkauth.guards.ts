@@ -9,21 +9,20 @@ export class CheckAuthGuard implements CanActivate {
     }
 
     public canActivate(context: ExecutionContext): boolean {
-        // const isPublic = this.reflector.get<boolean>("isPublic", context.getHandler());
-
-        // if (isPublic) {
-        //     return true;
-        // }
-
         try {
             const ctx = GqlExecutionContext.create(context);
             const req = ctx.getContext().req;
 
             const token = req.headers["authorization"].split(' ')[1];
             if (!token) {
-                throw new UnauthorizedException("Ошибка авторизации, состояние 1");
+                throw new UnauthorizedException("Ошибка авторизации, guard, состояние 1");
             }
+
             const decoded = this.authService.verify(token);
+            if (!decoded) {
+                throw new UnauthorizedException("Ошибка авторизации, guard, состояние 2");
+            }
+
             req["user"] = decoded;
             return true;
 

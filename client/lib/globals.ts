@@ -161,6 +161,30 @@ export async function getAllChildresnProductsCategoriesByParent(id: number): Pro
     return data;
 }
 
+export async function getAuthUser(email: string, password: string): Promise<any> {
+    return await client.query({
+        variables: { data: { email: email, password: password } },
+        query: gql`
+        query Login($data: LoginUserInput!) {
+            login(data: $data) {
+                    JWTKey
+                }
+        }`,
+    });
+}
+
+export async function checkAuth(): Promise<any> {
+    return await client.query({
+        fetchPolicy: 'no-cache',
+        query: gql`
+        query{
+            checkAuth {
+                JWTKey
+            }
+        }`,
+    });
+}
+
 interface IgetPageData {
     getPageById: any;
 }

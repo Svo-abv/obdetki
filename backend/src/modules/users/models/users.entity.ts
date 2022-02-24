@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from "@nestjs/graphql";
+import { Field, HideField, ID, ObjectType } from "@nestjs/graphql";
 import { Basket } from "src/modules/basket/models/basket.entity";
 import { Orders } from "src/modules/orders/models/orders.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
@@ -16,7 +16,7 @@ export class Users {
     name?: string;
 
     @Column()
-    @Field()
+    @HideField()
     password?: string;
 
     @Column({ default: null })

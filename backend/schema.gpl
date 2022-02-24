@@ -122,7 +122,6 @@ type Basket {
 type Users {
   id: ID!
   name: String!
-  password: String!
   town: String!
   address: String!
   email: String!

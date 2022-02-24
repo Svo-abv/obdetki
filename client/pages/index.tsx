@@ -9,6 +9,7 @@ import NewProductsBlock from '../components/newProductsBlock';
 import { getLatest20Products, getMenuPages } from '../lib/globals';
 
 const Home = ({ headData, newProducts }: any) => {
+
   return (
     <div>
       <HeadPage title={headData.title} description={headData.description} />

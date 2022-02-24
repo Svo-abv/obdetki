@@ -1,5 +1,5 @@
-import { NotFoundException, UseGuards } from '@nestjs/common';
-import { Args, Context, GqlExecutionContext, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { createParamDecorator, ExecutionContext, NotFoundException, Request, UseGuards } from '@nestjs/common';
+import { Args, GqlExecutionContext, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { BasketService } from '../basket/basket.service';
 import { Basket } from '../basket/models/basket.entity';
 import { Orders } from '../orders/models/orders.entity';
@@ -12,6 +12,12 @@ import { Users } from './models/users.entity';
 import { UsersService } from './users.service';
 import { UserDto } from './dto/user.dto';
 import { CheckAuthGuard } from 'src/utils/guards/checkauth.guards';
+
+
+export const User = createParamDecorator(
+    (data: unknown, ctx: ExecutionContext) =>
+        GqlExecutionContext.create(ctx).getContext().req['user'],
+);
 
 @Resolver(of => Users)
 export class UsersResolver {
@@ -32,11 +38,10 @@ export class UsersResolver {
         return this.usersService.login(data);
     }
 
+    @UseGuards(CheckAuthGuard)
     @Query(returns => AuthUserDto)
-    async checkAuth(@Context() context: any): Promise<ValidUserDto> {
-        const gqlContext = GqlExecutionContext.create(context);
-        console.log(gqlContext);
-        return this.usersService.checkAuth(context);
+    async checkAuth(@User() user: any): Promise<ValidUserDto> {
+        return this.usersService.checkAuth(user);
     }
 
     @Query(returns => UserDto)

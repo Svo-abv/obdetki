@@ -37,19 +37,8 @@ export class UsersService {
         }
     }
 
-    async checkAuth(jwt: string): Promise<ValidUserDto> {
-        if (!jwt)
-            throw new HttpException("Ошибка авторизации, ключ - состояние 1", HttpStatus.FORBIDDEN);
-
-        const currKey = jwt.split(' ');
-        if (!currKey[0] || currKey[0] !== "Bearer")
-            throw new HttpException("Ошибка авторизации, ключ - состояние 2", HttpStatus.FORBIDDEN);
-
-        const currUser = <Users>this.authService.decode(currKey[1]);
-        if (!currUser)
-            throw new HttpException("Ошибка авторизации, пользователь", HttpStatus.FORBIDDEN);
-
-        const key = this.authService.sign({ id: currUser.id, email: currUser.email, name: currUser.name, role: currUser.role });
+    async checkAuth(user: Users): Promise<ValidUserDto> {
+        const key = this.authService.sign({ id: user.id, email: user.email, name: user.name, role: user.role });
         return { JWTKey: key };
     }
 

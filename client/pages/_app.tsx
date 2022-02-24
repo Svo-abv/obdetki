@@ -9,28 +9,34 @@ import MainLogoBlock from '../components/mainLogoBlock';
 import NavigationMenu from '../components/navigationMenu';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 import { ApolloProvider } from '@apollo/client';
-
-
 import client from '../apollo-client';
+import React, { createContext, } from 'react';
+import UserStore from '../stores/userStore';
 
+
+export const Context = createContext({
+  user: new UserStore(),
+});
+
+//
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div className={styles.container}>
       <SSRProvider>
         <ApolloProvider client={client}>
-          {/* <StoreProvider {...pageProps}> */}
-          <Head>
-            <link rel="icon" href="/favicon.ico" />
-          </Head>
-          <ContactsTopBlock />
-          <MainLogoBlock />
-          <NavigationMenu props={pageProps} />
-          <Component {...pageProps} />
-          <FooterPage />
-          {/* </StoreProvider> */}
+          <Context.Provider value={{ user: new UserStore(), }}>
+            <Head>
+              <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <ContactsTopBlock />
+            <MainLogoBlock />
+            <NavigationMenu props={pageProps} />
+            <Component {...pageProps} />
+            <FooterPage />
+          </Context.Provider>
         </ApolloProvider>
       </SSRProvider>
-    </div>
+    </div >
   );
 }
 
