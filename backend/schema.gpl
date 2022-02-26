@@ -107,6 +107,8 @@ type BasketRows {
   id: ID!
   count: Float!
   price: Float!
+  productId: Float
+  basketId: Float
   basket: Basket!
   product: Products!
 }
@@ -149,6 +151,11 @@ type UserDto {
   town: String
   address: String
   telephone: String
+}
+
+type BasketRowsDto {
+  id: Float
+  count: Float!
 }
 
 """Pages"""
@@ -199,6 +206,7 @@ type Query {
   getBasketByUserId(id: Float!): Basket
   getBasketRowById(id: Float!): BasketRows!
   getBasketRowsByUserId(id: Float!): [BasketRows!]
+  getCountsRowsByUserId(userId: Float!): BasketRowsDto!
   getOrdersById(id: Float!): Orders!
   getOrdersByUserId(id: Float!): [Orders!]!
   getPageById(id: Float!): Pages!
@@ -237,6 +245,8 @@ input LoginUserInput {
 
 type Mutation {
   registration(data: UserInput!): ValidUserDto!
+  createProductBasketRow(data: BasketRowInput!, userId: Float!): BasketRowsDto!
+  deleteProductBasketRowById(userId: Float!, id: Float!): BasketRowsDto!
   createProduct(data: ProductInput!): ProductsDto!
   UploadProductImage(file: ProductImageUploadInput!): ProductImageUploadType
   CreateProductImages(data: ProductImagesInput!): ProductImagesDto!
@@ -254,6 +264,12 @@ input UserInput {
   town: String
   address: String
   telephone: String
+}
+
+input BasketRowInput {
+  count: Float!
+  price: Float!
+  productId: Float!
 }
 
 input ProductInput {

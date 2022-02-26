@@ -21,14 +21,11 @@
   min-height: 145px;
 }
 
-.cardProduct .btn{
-    background-color: #1faee9;
-    border: none;
-}
-.cardProduct .btn:hover{
-    background-color: #0d6efd;
-}
 .cardProduct .price{
     font-weight: 600;
     text-align:right;
+}
+.green
+{
+     background-color: green;
 }

@@ -16,7 +16,7 @@ export class Basket {
     @Field(type => Users, { nullable: true })
     user?: Users;
 
-    @OneToMany(() => BasketRows, basketRows => basketRows.basket, { nullable: true })
+    @OneToMany(() => BasketRows, basketRows => basketRows.basketId, { nullable: true })
     @Field(type => [BasketRows], { nullable: 'itemsAndList' })
     basketRows?: BasketRows[];
 

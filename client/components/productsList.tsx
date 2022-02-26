@@ -3,8 +3,10 @@ import { observer } from 'mobx-react';
 import Link from 'next/link';
 import React, { useContext } from 'react';
 import { Container, Card, Button } from 'react-bootstrap';
+import { insertIntoBasket } from '../lib/globals';
 import { Context } from '../pages/_app';
 import classes from '../styles/ProductsList.module.css'
+import ButtonCart from './ButtonCart';
 
 interface IProductsList {
     products: any
@@ -12,6 +14,7 @@ interface IProductsList {
 }
 const ProductsList = (newProducts: IProductsList) => {
     const { user } = useContext(Context);
+
     return (
         <Container className={newProducts.className} fluid>
             {
@@ -35,7 +38,7 @@ const ProductsList = (newProducts: IProductsList) => {
                         </Card>
                         </Link>
                         {
-                            user.isAuth && <Button className={classes.btn}>в корзину</Button>
+                            user.isAuth && <ButtonCart product={product} />
                         }
                     </Card>))
             }

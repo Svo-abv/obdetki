@@ -133,6 +133,7 @@ interface IgetLatest20Product {
 }
 export async function getLatest20Products(): Promise<IgetLatest20Product> {
     const { data } = await client.query({
+        fetchPolicy: 'no-cache',
         query: gql`
         query Products{
             getLastNewsProducts {
@@ -188,6 +189,7 @@ export async function checkAuth(): Promise<any> {
 interface IgetPageData {
     getPageById: any;
 }
+
 export async function getPageData(id: number): Promise<IgetPageData> {
     const { data } = await client.query({
         query: gql`
@@ -200,4 +202,78 @@ export async function getPageData(id: number): Promise<IgetPageData> {
         }`,
     });
     return data;
+}
+
+
+export async function insertIntoBasket(userId: number, product: any, count?: number): Promise<any> {
+
+    const rawPairs = await getPairsInBox(product.id, Number(process.env.PAIR_IN_BOX_ID));
+    let pairs = 0;
+    if (!count) {
+        pairs = rawPairs.getProductPropertyRowByProductIdAndProperyId ? rawPairs.getProductPropertyRowByProductIdAndProperyId.value : 1;
+    }
+    else {
+        pairs = count;
+    }
+
+
+    const { data } = await client.mutate({
+        variables: { data: { count: Number(pairs), price: Number(product.price), productId: Number(product.id) }, userId: userId },
+        mutation: gql`
+        mutation CreateProductBasketRow($data: BasketRowInput!, $userId: Float!) {
+            createProductBasketRow(data: $data, userId: $userId) {
+                id
+                count
+            }
+        }`,
+    });
+    return data.createProductBasketRow;
+}
+
+export async function deleteRowBasket(userId: number, id: number): Promise<any> {
+    const { data } = await client.mutate({
+        variables: { userId: Number(userId), id: Number(id) },
+        mutation: gql`
+        mutation DeleteProductBasketRowById($userId: Float!, $id: Float!) {
+                deleteProductBasketRowById(userId: $userId, id: $id) {
+                    count
+                }
+                } `});
+    return data.deleteProductBasketRowById;
+}
+
+export async function getCountRowsInCartByUser(userId: number): Promise<any> {
+    const { data } = await client.query({
+        fetchPolicy: 'no-cache',
+        query: gql`
+        query {
+    getCountsRowsByUserId(userId: ${userId}) {
+        count
+    }
+} `,
+    });
+    return data.getCountsRowsByUserId;
+}
+
+export async function getCartRowsByUser(userId: number): Promise<any> {
+    const { data } = await client.query({
+        fetchPolicy: 'no-cache',
+        query: gql`
+        query {
+    getBasketRowsByUserId(id: ${userId}) {
+        count
+        id
+        price
+                product {
+            id
+            code
+            name
+                        productImages {
+                url
+            }
+        }
+    }
+} `,
+    });
+    return data.getBasketRowsByUserId;
 }

@@ -19,6 +19,14 @@ export class BasketRows {
     @Field()
     price?: number;
 
+    @Column({ default: null })
+    @Field({ nullable: true })
+    productId?: number;
+
+    @Column({ default: null })
+    @Field({ nullable: true })
+    basketId?: number;
+
     @ManyToOne(() => Basket, basket => basket.id)
     @Field(type => Basket)
     basket?: Basket;

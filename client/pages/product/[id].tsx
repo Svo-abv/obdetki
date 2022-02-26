@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import { getMenuPages, getProductById, getProductImagesByProductId, getPairsInBox } from "../../lib/globals";
+import { getMenuPages, getProductById, getProductImagesByProductId, getPairsInBox, insertIntoBasket } from "../../lib/globals";
 import styles from '../../styles/Home.module.css';
 import HeadPage from "../../components/headPage";
 import { Button, Col, Container, Form, FormGroup, ListGroup, Row, Spinner, Table } from "react-bootstrap";
@@ -8,10 +8,19 @@ import SearchBlock from "../../components/searchBlock";
 import classes from '../../styles/Product.module.css'
 import Image from "next/image";
 import { Context } from "../_app";
+import ButtonCart from "../../components/ButtonCart";
 
 const ProductItem = ({ headData, productId, product, images, pairs }: any) => {
+    const [currentPairs, setCurrentPairs] = useState(pairs);
     const [mainImage, setMainImage] = useState(product.productImages.url);
     const { user } = useContext(Context);
+
+    const addCartHandler = (e: any, product: any, count: number) => {
+        insertIntoBasket(user.user.id, product, count).then((data) => {
+            user.inCart = data.count;
+        });
+    }
+
 
     return (
         <div>
@@ -39,9 +48,11 @@ const ProductItem = ({ headData, productId, product, images, pairs }: any) => {
                             <h5>Цена: {product.price}<span>.00 ₽</span> за пару</h5>
                             <h5>Цена: {product.price * pairs}<span>.00 ₽</span> за короб</h5>
                             <Form.Group className={classes.formGroup}>
-                                <Form.Control type="number" defaultValue={pairs} min={pairs} step={pairs} className={classes.input} />
+                                <Form.Control type="number" min={pairs} step={pairs} className={classes.input} value={currentPairs}
+                                    onChange={(e) => setCurrentPairs(e.target.value)} />
                                 {
-                                    user.isAuth && (<Button className={classes.btn}>в корзину</Button>)
+                                    user.isAuth && (<ButtonCart product={{ id: product.id, price: product.price }} count={currentPairs} />)
+                                    //(<Button className={classes.btn} onClick={(e) => addCartHandler(e, { id: product.id, price: product.price }, currentPairs)}>в корзину</Button>)
                                 }
                             </Form.Group>
                             {

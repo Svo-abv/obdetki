@@ -11,8 +11,8 @@ const authLink = setContext((_, { headers }) => {
     if (!isServer) {
         const token = localStorage.getItem('JwtKey');
 
-        console.log("token: " + token);
-        console.log("isServer: " + isServer);
+        //console.log("token: " + token);
+        //console.log("isServer: " + isServer);
         // return the headers to the context so httpLink can read them
         return {
             headers: {
