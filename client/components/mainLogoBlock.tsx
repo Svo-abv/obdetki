@@ -21,6 +21,7 @@ const MainLogoBlock = () => {
             user.user = jwtDecode(data.checkAuth.JWTKey);
             getCountRowsInCartByUser(user.user.id).then((data) => {
                 user.inCart = data.count;
+                user.cartSum = data.sum;
             })
 
         }).catch((e) => console.log(e))

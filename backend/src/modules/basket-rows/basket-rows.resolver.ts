@@ -15,6 +15,7 @@ export class BasketRowsResolver {
         private readonly basketRowsService: BasketRowsService,
         private readonly basketService: BasketService,
     ) { }
+
     @Query(returns => BasketRows)
     async getBasketRowById(@Args('id') id: number): Promise<BasketRows> {
 
@@ -42,9 +43,9 @@ export class BasketRowsResolver {
     }
 
     @Query(returns => BasketRowsDto)
-    async getCountsRowsByUserId(@Args('userId') userId: number,): Promise<BasketRowsDto> {
+    async getCountsRowsAndSumByUserId(@Args('userId') userId: number,): Promise<BasketRowsDto> {
         const basketId = await this.basketService.getBasketByUserId(userId);
-        return this.basketRowsService.getCountsRowsByBasketId(basketId.id);
+        return this.basketRowsService.getCountsRowsAndSumByUserId(basketId.id);
     }
 
     @UseGuards(CheckAuthGuard)

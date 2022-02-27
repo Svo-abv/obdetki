@@ -236,23 +236,91 @@ export async function deleteRowBasket(userId: number, id: number): Promise<any> 
         mutation: gql`
         mutation DeleteProductBasketRowById($userId: Float!, $id: Float!) {
                 deleteProductBasketRowById(userId: $userId, id: $id) {
-                    count
-                }
+                        count
+                        sum
+                    }
                 } `});
     return data.deleteProductBasketRowById;
 }
+
+interface IUpdateUserData {
+    id: number;
+    name?: string;
+    town?: string;
+    telephone?: string;
+
+}
+export async function updateUserData(vals: IUpdateUserData): Promise<any> {
+    const { data } = await client.mutate({
+        variables: { data: vals },
+        mutation: gql`
+        mutation Update($data: UserUpdateInput!) {
+            update(data: $data) {
+                    updated
+                }
+            }`});
+    return data.update;
+}
+
+interface ICreateOrder {
+    cargoId?: number;
+    userId?: number;
+    comment?: string;
+}
+
+export async function createOrder(vals: ICreateOrder): Promise<any> {
+    console.log(vals);
+    const { data } = await client.mutate({
+        variables: { data: vals },
+        mutation: gql`
+        mutation CreateOrder($data: CreateOrderInput!) {
+            createOrder(data: $data) {
+                    id
+                    number
+                }
+            }`});
+    return data.createOrder;
+}
+
 
 export async function getCountRowsInCartByUser(userId: number): Promise<any> {
     const { data } = await client.query({
         fetchPolicy: 'no-cache',
         query: gql`
         query {
-    getCountsRowsByUserId(userId: ${userId}) {
-        count
-    }
-} `,
+            getCountsRowsAndSumByUserId(userId: ${userId}) {
+                count
+                sum
+            }
+        } `,
     });
-    return data.getCountsRowsByUserId;
+    return data.getCountsRowsAndSumByUserId;
+}
+
+export async function getCargoList(userId: number): Promise<any> {
+    const { data } = await client.query({
+        query: gql`query {
+            getCargoByBasketRowsSum(userId: ${userId}) {
+                id
+                name
+            }
+        }`,
+    });
+    return data.getCargoByBasketRowsSum;
+}
+
+export async function getUserData(userId: number): Promise<any> {
+    const { data } = await client.query({
+        query: gql`query {
+              getUserById(id: ${userId}) {
+                    name    
+                    town
+                    telephone
+                }
+            }`,
+    });
+    delete data.getUserById.____typename;
+    return data.getUserById;
 }
 
 export async function getCartRowsByUser(userId: number): Promise<any> {

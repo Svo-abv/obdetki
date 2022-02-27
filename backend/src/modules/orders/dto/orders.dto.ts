@@ -1,3 +1,7 @@
+import { Field, ObjectType } from "@nestjs/graphql";
+
+@ObjectType()
 export class OrdersDto {
-    id: number;
+    @Field() id: number;
+    @Field() number?: string;
 }

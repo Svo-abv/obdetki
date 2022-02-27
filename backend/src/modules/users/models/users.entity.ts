@@ -49,11 +49,11 @@ export class Users {
     @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
     updatedAt: Date;
 
-    @OneToOne(() => Basket, basket => basket.user, { nullable: true })
+    @OneToOne(() => Basket, basket => basket.userId, { nullable: true, onDelete: "CASCADE" })
     @Field(type => Basket, { nullable: true })
     basket?: Basket;
 
-    @OneToMany(() => Orders, order => order.user, { nullable: true })
+    @OneToMany(() => Orders, order => order.userId, { nullable: true, onDelete: "CASCADE" })
     @Field(type => [Orders], { nullable: 'itemsAndList' })
     order?: Orders[];
 }

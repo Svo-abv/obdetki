@@ -16,6 +16,7 @@ const CartRows = (props: ICartRows) => {
     const removItemHandler = (item: any) => {
         deleteRowBasket(userId, item.id).then((res: any) => {
             user.inCart = res.count;
+            user.cartSum = res.sum;
         })
     }
 
@@ -42,6 +43,7 @@ const CartRows = (props: ICartRows) => {
                 ))
             }
             <hr />
+            <Col sm md={{ offset: 7 }}><b>Сумма по заказу: {user.cartSum}</b></Col>
         </Container>
     );
 };

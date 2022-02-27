@@ -12,7 +12,8 @@ export class BasketService {
     async getBasketById(id: number): Promise<Basket> {
         return await this.basketRepository.findOne(id);
     }
+
     async getBasketByUserId(id: number): Promise<Basket> {
-        return await this.basketRepository.findOne({ where: { user: id } });
+        return await this.basketRepository.findOne({ where: { userId: id } });
     }
 }

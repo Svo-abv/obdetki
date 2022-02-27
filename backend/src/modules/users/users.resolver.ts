@@ -12,6 +12,8 @@ import { Users } from './models/users.entity';
 import { UsersService } from './users.service';
 import { UserDto } from './dto/user.dto';
 import { CheckAuthGuard } from 'src/utils/guards/checkauth.guards';
+import { UserUpdateInput } from './inputs/update-user.input';
+import { UserUpdateDto } from './dto/update-user.dto';
 
 
 export const User = createParamDecorator(
@@ -72,5 +74,11 @@ export class UsersResolver {
     async getOrders(@Parent() user: Users) {
         const { id } = user;
         return this.ordersService.getOrdersByUserId(id);
+    }
+
+    @UseGuards(CheckAuthGuard)
+    @Mutation(returns => UserUpdateDto)
+    async update(@Args('data') data: UserUpdateInput): Promise<UserUpdateDto> {
+        return this.usersService.update(data);
     }
 }

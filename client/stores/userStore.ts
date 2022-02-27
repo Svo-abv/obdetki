@@ -15,10 +15,12 @@ class UserStore {
     private _user: any;
     private _isAuth: boolean;
     _inCart: number;
+    _cartSum: number;
 
     constructor() {
         this._isAuth = false;
         this._inCart = 0;
+        this._cartSum = 0;
         makeAutoObservable(this);
     }
     set user(user: any) {
@@ -43,6 +45,14 @@ class UserStore {
 
     get inCart(): number {
         return this._inCart;
+    }
+
+    set cartSum(v: number) {
+        this._cartSum = v;
+    }
+
+    get cartSum(): number {
+        return this._cartSum;
     }
 
     hydrate(serializedStore: SerializedStore) {

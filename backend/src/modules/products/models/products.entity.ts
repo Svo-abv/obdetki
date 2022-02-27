@@ -73,7 +73,7 @@ export class Products {
     @Field(type => [BasketRows])
     basketRows?: BasketRows[];
 
-    @OneToMany(() => OrdersRows, ordersRows => ordersRows.product)
+    @OneToMany(() => OrdersRows, ordersRows => ordersRows.productId)
     @Field(type => [OrdersRows])
     ordersRows?: OrdersRows[];
 

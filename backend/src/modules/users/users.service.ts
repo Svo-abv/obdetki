@@ -8,6 +8,8 @@ import { UserInput } from './inputs/create-user.input';
 import { ValidUserDto } from './dto/valid-user.dto';
 import { LoginUserInput } from './inputs/login-user.input';
 import { UserDto } from './dto/user.dto';
+import { UserUpdateInput } from './inputs/update-user.input';
+import { UserUpdateDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -32,6 +34,15 @@ export class UsersService {
             const result = await this.usersRepository.save(newUser);
             const jwt = this.authService.sign({ id: newUser.id, email: newUser.email, name: newUser.name, role: newUser.role });
             return { ...result, JWTKey: jwt };
+        } catch (e) {
+            throw new HttpException("Ошибка при регистрации", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    async update(data: UserUpdateInput): Promise<UserUpdateDto> {
+        try {
+            await this.usersRepository.save(data);
+            return { updated: true };
         } catch (e) {
             throw new HttpException("Ошибка при регистрации", HttpStatus.BAD_REQUEST);
         }

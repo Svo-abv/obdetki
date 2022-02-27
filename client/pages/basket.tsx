@@ -18,7 +18,6 @@ const Basket = ({ headData }: any) => {
     useEffect(() => {
         user.isAuth && getCartRowsByUser(user.user.id).then((data) => {
             setCurrentCartRows(data);
-            console.log("fetch data....")
         }).finally(() => setIsLoading(false));
 
     }, [user.inCart]);
@@ -32,7 +31,7 @@ const Basket = ({ headData }: any) => {
                 }
                 {
                     isLoading ? <Spinner className={classes.spiner} animation="border" role="status" /> :
-                        <CartRows userId={user.user.id} currentCartRows={currentCartRows} />
+                        (user.user && <CartRows userId={user.user.id} currentCartRows={currentCartRows} />)
                 }
                 {
                     currentCartRows.length > 0 ? <ConfirmOrder /> : <h5>Ваша корзина пуста!</h5>

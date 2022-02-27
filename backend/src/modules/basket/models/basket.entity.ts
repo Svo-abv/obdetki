@@ -11,6 +11,10 @@ export class Basket {
     @Field(type => ID)
     id?: number;
 
+    @Column({ default: null })
+    @Field()
+    userId: number;
+
     @OneToOne(() => Users, user => user.id, { nullable: true })
     @JoinColumn()
     @Field(type => Users, { nullable: true })

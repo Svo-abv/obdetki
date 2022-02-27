@@ -1,5 +1,4 @@
 import { createWriteStream, unlink } from "fs";
-import shortid = require('shortid');
 import UPLOAD_DIRECTORY_URL from "./config/UPLOAD_DIRECTORY_URL";
 
 /**

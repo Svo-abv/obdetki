@@ -35,12 +35,29 @@ export class BasketRowsService {
 
     async deleteProductBasketRowById(basketId: number, id: number): Promise<BasketRowsDto> {
         await this.basketRowsRepository.remove({ id });
-        const count = await this.basketRowsRepository.count({ where: { basketId: basketId } });
-        return { count: count }
+        const count = await this.basketRowsRepository.createQueryBuilder("r")
+            .select("count(*) as count, sum(r.price*r.count) as sum")
+            .where(`r."basketId" = :basketId`, { basketId: basketId })
+            .getRawOne();
+        return count;
     }
-    async getCountsRowsByBasketId(basketId: number): Promise<BasketRowsDto> {
-        const count = await this.basketRowsRepository.count({ where: { basketId: basketId } });
-        return { count: count }
+
+    async clearBasket(basketId: number): Promise<any> {
+        return await this.basketRowsRepository
+            .createQueryBuilder()
+            .delete()
+            .from(BasketRows)
+            .where(`basketId= ${basketId}`)
+            .execute();
+    }
+
+    async getCountsRowsAndSumByUserId(basketId: number): Promise<BasketRowsDto> {
+        //const count = await this.basketRowsRepository.count({ where: { basketId: basketId } });
+        const count = await this.basketRowsRepository.createQueryBuilder("r")
+            .select("count(*) as count, sum(r.price*r.count) as sum")
+            .where(`r."basketId" = :basketId`, { basketId: basketId })
+            .getRawOne();
+        return count;
     }
 
 }

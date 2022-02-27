@@ -14,15 +14,27 @@ export class Orders {
 
     @Column({ default: null })
     @Field()
-    number: number;
+    number: string;
 
     @Column('timestamp with time zone', { nullable: false, default: () => 'CURRENT_TIMESTAMP' })
     @Field()
     date: Date;
 
-    @Column({ unique: true })
+    @Column({ default: null })
     @Field()
+    cargoId: number;
+
+    @Column({ default: null })
+    @Field()
+    userId: number;
+
+    @Column({ unique: true, default: null })
+    @Field({ nullable: true })
     uuid_1c: string;
+
+    @Column({ default: null, type: "text" })
+    @Field()
+    comment: string;
 
     @ManyToOne(type => Cargo, cargo => cargo.id)
     @Field(type => Cargo)
@@ -32,7 +44,7 @@ export class Orders {
     @Field(type => Users)
     user: Users;
 
-    @OneToMany(() => OrdersRows, ordersRows => ordersRows.order)
+    @OneToMany(() => OrdersRows, ordersRows => ordersRows.orderId, { onDelete: "CASCADE" })
     @Field(type => [OrdersRows])
     ordersRows: OrdersRows[];
 

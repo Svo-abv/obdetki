@@ -31,12 +31,13 @@ import { ProductProperties } from './modules/product-properties/models/product-p
 import { ProductPropertiesRows } from './modules/product-properties-rows/models/product-properties-rows.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-//import { Upload } from 'graphql-upload';
 import { Upload } from './utils/types/Upload.scalar';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      isGlobal: true,
       envFilePath: ['.env.local',],
     }),
     GraphQLModule.forRoot({
@@ -71,7 +72,7 @@ import { Upload } from './utils/types/Upload.scalar';
     CargoModule, ProductsModule,
     ProductCategoriesModule, ProductBrandsModule,
     ProductImagesModule, ProductPropertiesModule,
-    ProductPropertiesRowsModule,
+    ProductPropertiesRowsModule, MailModule,
   ],
   providers: [Upload,],
 })

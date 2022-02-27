@@ -19,6 +19,14 @@ export class OrdersRows {
     @Field()
     price?: number;
 
+    @Column({ nullable: true })
+    @Field()
+    orderId?: number;
+
+    @Column({ nullable: true })
+    @Field()
+    productId?: number;
+
     @ManyToOne(() => Orders, order => order.id)
     @Field(type => Orders)
     order?: Orders;

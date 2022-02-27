@@ -18,7 +18,7 @@ export class Cargo {
     @Field()
     minimalSumm: number;
 
-    @OneToMany(() => Orders, orders => orders.cargo)
+    @OneToMany(() => Orders, orders => orders.cargoId, { onDelete: "SET NULL" })
     @Field(type => [Orders])
     orders: Orders[];
 

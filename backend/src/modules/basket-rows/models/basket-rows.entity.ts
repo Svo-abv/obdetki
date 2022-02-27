@@ -27,11 +27,11 @@ export class BasketRows {
     @Field({ nullable: true })
     basketId?: number;
 
-    @ManyToOne(() => Basket, basket => basket.id)
+    @ManyToOne(() => Basket, basket => basket.id, { onDelete: "CASCADE" })
     @Field(type => Basket)
     basket?: Basket;
 
-    @ManyToOne(() => Products, product => product.id)
+    @ManyToOne(() => Products, product => product.id, { onDelete: "SET NULL" })
     @Field(type => Products)
     product?: Products;
 
