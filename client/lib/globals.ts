@@ -269,7 +269,6 @@ interface ICreateOrder {
 }
 
 export async function createOrder(vals: ICreateOrder): Promise<any> {
-    console.log(vals);
     const { data } = await client.mutate({
         variables: { data: vals },
         mutation: gql`
@@ -281,7 +280,24 @@ export async function createOrder(vals: ICreateOrder): Promise<any> {
             }`});
     return data.createOrder;
 }
+interface IRegisterUser {
+    name: string;
+    email: string;
+    town: string;
+    telephone: string;
+}
 
+export async function registerUser(user: IRegisterUser): Promise<any> {
+    const { data } = await client.mutate({
+        variables: { data: user },
+        mutation: gql`
+        mutation Registration($data: UserInput!) {
+            registration(data: $data) {
+                JWTKey
+            }
+        }`});
+    return data.registration;
+}
 
 export async function getCountRowsInCartByUser(userId: number): Promise<any> {
     const { data } = await client.query({

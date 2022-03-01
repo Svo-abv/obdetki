@@ -3,8 +3,10 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CheckAuthGuard } from 'src/utils/guards/checkauth.guards';
 import { BasketRowsService } from '../basket-rows/basket-rows.service';
 import { BasketService } from '../basket/basket.service';
+import { CargoService } from '../cargo/cargo.service';
 import { MailService } from '../mail/mail.service';
 import { OrdersRowsService } from '../orders-rows/orders-rows.service';
+import { UsersService } from '../users/users.service';
 import { OrdersDto } from './dto/orders.dto';
 import { CreateOrderInput } from './inputs/create-order.input';
 import { Orders } from './models/orders.entity';
@@ -18,9 +20,12 @@ export class OrdersResolver {
         private readonly basketService: BasketService,
         private readonly ordersRowsService: OrdersRowsService,
         private readonly basketRowsService: BasketRowsService,
-        private readonly mailService: MailService
+        private readonly mailService: MailService,
+        private readonly userService: UsersService,
+        private readonly cargoService: CargoService,
     ) { }
 
+    @UseGuards(CheckAuthGuard)
     @Query(returns => Orders)
     async getOrdersById(@Args('id') id: number): Promise<Orders> {
         const order = await this.ordersService.getOrderById(id);
@@ -30,6 +35,7 @@ export class OrdersResolver {
         return order;
     }
 
+    @UseGuards(CheckAuthGuard)
     @Query(returns => [Orders])
     async getOrdersByUserId(@Args('id') id: number): Promise<Orders[]> {
         const orders = await this.ordersService.getOrdersByUserId(id);
@@ -47,7 +53,13 @@ export class OrdersResolver {
             const basketId = await this.basketService.getBasketByUserId(data.userId);
             await this.ordersRowsService.copyBasketRowsInOrdersRows(basketId.id, newOrder.id);
             await this.basketRowsService.clearBasket(basketId.id);
-            await this.mailService.newOrderToAdmin("bobrant@ya.ru", newOrder.number);
+
+            const user = await this.userService.getUserById(data.userId);
+            const rows = await this.ordersRowsService.getProductsRowsByIdOrder(newOrder.id);
+            const cargo = await this.cargoService.getCargoNameById(data.cargoId);
+
+            await this.mailService.newOrderToAdmin(newOrder, user, rows, cargo.name, data.comment);
+            await this.mailService.newOrderToUser(newOrder, user, rows, cargo.name, data.comment);
             return newOrder;
         } catch (e) {
             throw new NotFoundException(e);

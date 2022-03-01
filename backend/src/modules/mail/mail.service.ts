@@ -1,42 +1,69 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
+import { OrdersRows } from '../orders-rows/models/orders-rows.entity';
+import { OrdersDto } from '../orders/dto/orders.dto';
+import { UserDto } from '../users/dto/user.dto';
 
 @Injectable()
 export class MailService {
-    constructor(private mailerSErvice: MailerService) {
+    constructor(private mailerSErvice: MailerService) { }
 
-    }
-
-    async newOrderToAdmin(to: string, number: string) {
+    async newOrderToAdmin(order: OrdersDto, user: UserDto, rows: OrdersRows[], cargo: string, comment: string) {
         this.mailerSErvice.sendMail({
-            to: to, // list of receivers
-            //from: 'info@obdetki.ru', // sender address
-            subject: `[ООО "ОбувьДетки"]: Новый заказ #${number}`,
-            template: 'welcome', // HTML body content
+            to: process.env.ADMIN_MAIL, // list of receivers
+            subject: `[ООО "ОбувьДетки"]: Новый заказ #${order.number}`,
+            template: 'new-order-admin', // HTML body content
+            context: {
+                number: order.number,
+                name: user.name,
+                orderRows: rows,
+                nameCargo: cargo,
+                comment: comment,
+            },
         })
             .then(() => { })
             .catch((e) => { console.log(e) });
     }
 
-    async newOrderToUser(to: string, number: string) {
+    async newOrderToUser(order: OrdersDto, user: UserDto, rows: OrdersRows[], cargo: string, comment: string) {
         this.mailerSErvice.sendMail({
-            to: to, // list of receivers
-            from: 'info@obdetki.ru', // sender address
-            subject: `[ООО "ОбувьДетки"]: Новый заказ #${number}`,
-            template: 'welcome', // HTML body content
+            to: user.email, // list of receivers
+            subject: `[ООО "ОбувьДетки"]: Ваш заказ #${order.number}`,
+            template: 'new-order-user', // HTML body content
+            context: {
+                number: order.number,
+                orderRows: rows,
+                nameCargo: cargo,
+                comment: comment,
+            },
         })
             .then(() => { })
-            .catch(() => { });
+            .catch((e) => { console.log(e) });
     }
 
-    async userRegistred(to: string, user: any) {
+    async userRegistredToAdmin(user: any) {
         this.mailerSErvice.sendMail({
-            to: to, // list of receivers
-            from: 'info@obdetki.ru', // sender address
+            to: process.env.ADMIN_MAIL, // list of receivers
             subject: `[ООО "ОбувьДетки"]: Регистрация нового пользователя`,
-            html: '<b>welcome</b>', // HTML body content
-        })
-            .then(() => { })
-            .catch(() => { });
+            template: 'new-user-admin', // HTML body content
+            context: {
+                user: user,
+            },
+        });
+    }
+
+    async userRegistredToUser(name: string, pwd: string) {
+        this.mailerSErvice.sendMail({
+            to: name, // list of receivers
+            subject: `[ООО "ОбувьДетки"]: Регистрация на сайте`,
+            template: 'new-user-user', // HTML body content
+            context: {
+                name: name,
+                pwd: pwd,
+            },
+        });
     }
 }
+
+
+

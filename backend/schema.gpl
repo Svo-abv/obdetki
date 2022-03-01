@@ -282,11 +282,8 @@ type Mutation {
 
 input UserInput {
   email: String!
-  password: String!
-  role: String
   name: String
   town: String
-  address: String
   telephone: String
 }
 

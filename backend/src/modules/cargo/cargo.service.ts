@@ -12,10 +12,13 @@ export class CargoService {
     ) { }
 
     async getCargoByBasketRowsSum(basketId: number): Promise<CargoDto[]> {
-
         return await this.repositoryCargo.createQueryBuilder("c")
             .where(`c."minimalSumm"<(select sum(count*price) from basket_rows as b where b."basketId"=:basketId)`, { basketId: basketId })
             .getMany();
 
+    }
+
+    async getCargoNameById(id: number): Promise<CargoDto> {
+        return await this.repositoryCargo.findOne(id);
     }
 }

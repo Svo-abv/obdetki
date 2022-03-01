@@ -46,6 +46,7 @@ export class UsersResolver {
         return this.usersService.checkAuth(user);
     }
 
+    @UseGuards(CheckAuthGuard)
     @Query(returns => UserDto)
     async getUserById(@Args('id') id: number): Promise<UserDto> {
         const user = await this.usersService.getUserById(id);
@@ -55,6 +56,7 @@ export class UsersResolver {
         return user;
     }
 
+    @UseGuards(CheckAuthGuard)
     @Query(returns => [UserDto])
     async getAllUsers(): Promise<UserDto[]> {
         const users = await this.usersService.getAllUsers();

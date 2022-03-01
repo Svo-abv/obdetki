@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getConnection, Repository } from 'typeorm';
+import { OrdersRowsInOrderDto } from './dto/order-rows-in-order.dto';
 import { OrdersRows } from './models/orders-rows.entity';
 
 @Injectable()
@@ -24,5 +25,10 @@ export class OrdersRowsService {
             .into(OrdersRows, ["orderId", "productId", 'price', 'count'])
             .values(result)
             .execute();
+    }
+
+
+    async getProductsRowsByIdOrder(orderId: number): Promise<OrdersRows[]> {
+        return await this.repositoryOrdersRows.find({ relations: ['product'], where: { orderId: orderId } })
     }
 }

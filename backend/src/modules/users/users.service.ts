@@ -10,6 +10,8 @@ import { LoginUserInput } from './inputs/login-user.input';
 import { UserDto } from './dto/user.dto';
 import { UserUpdateInput } from './inputs/update-user.input';
 import { UserUpdateDto } from './dto/update-user.dto';
+import * as shortid from 'shortid';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class UsersService {
@@ -17,7 +19,9 @@ export class UsersService {
     constructor(
         @InjectRepository(Users)
         private usersRepository: Repository<Users>,
-        private authService: AuthService) { }
+        private authService: AuthService,
+        private mailService: MailService,
+    ) { }
 
     async getUserById(id: number): Promise<UserDto> {
         return await this.usersRepository.findOne(id);
@@ -29,13 +33,18 @@ export class UsersService {
 
     async registration(data: UserInput): Promise<ValidUserDto> {
         try {
-            const hsh = await bcrypt.hash(data.password, 5);
+            const newPwd = shortid.generate();
+            const hsh = await bcrypt.hash(newPwd, 5);
             const newUser = this.usersRepository.create({ ...data, password: hsh });
             const result = await this.usersRepository.save(newUser);
             const jwt = this.authService.sign({ id: newUser.id, email: newUser.email, name: newUser.name, role: newUser.role });
+
+            this.mailService.userRegistredToAdmin(data);
+            this.mailService.userRegistredToUser(data.email, newPwd);
+
             return { ...result, JWTKey: jwt };
         } catch (e) {
-            throw new HttpException("Ошибка при регистрации", HttpStatus.BAD_REQUEST);
+            throw new HttpException("Ошибка при регистрации, возможно данный email уже используется, проверьте все поля", HttpStatus.BAD_REQUEST);
         }
     }
 

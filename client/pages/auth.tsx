@@ -6,12 +6,14 @@ import react, { FormEvent, useContext, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import client from "../apollo-client";
 import HeadPage from "../components/headPage";
+import RegisterForm from "../components/RegisterForm";
 import { getAuthUser, getMenuPages } from "../lib/globals";
 import styles from '../styles/Home.module.css';
 import { Context } from "./_app";
 
 const Auth = ({ headData }: any) => {
     const [email, setEmail] = useState("");
+    const [showRegister, setShowRegister] = useState(false);
     const [password, setPassword] = useState("");
     const { user } = useContext(Context);
     const navi = useRouter();
@@ -23,9 +25,17 @@ const Auth = ({ headData }: any) => {
             user.isAuth = true;
             user.user = jwtDecode(data.login.JWTKey);
             navi.push("/");
-
         }).catch((e) => (alert(e)));
 
+    }
+
+    const registerHandler = async (e: react.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setShowRegister(true);
+    }
+
+    const clouseHandler = () => {
+        setShowRegister(false);
     }
 
     return (
@@ -45,8 +55,11 @@ const Auth = ({ headData }: any) => {
                     </Form.Group>
                     <Button variant="primary" type="submit">
                         Войти
+                    </Button> <Button variant="primary" onClick={registerHandler}>
+                        Зарегестрироваться
                     </Button>
                 </Form>
+                {showRegister && < RegisterForm show={showRegister} onHide={clouseHandler} />}
             </main>
         </div>
     )

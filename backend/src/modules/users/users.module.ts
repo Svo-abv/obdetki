@@ -10,12 +10,14 @@ import { Orders } from '../orders/models/orders.entity';
 import { OrdersService } from '../orders/orders.service';
 import { OrdersModule } from '../orders/orders.module';
 import { AuthModule } from 'src/utils/auth/auth.module';
+import { MailModule } from '../mail/mail.module';
+import { MailService } from '../mail/mail.service';
 
 @Module({
-  providers: [UsersService, UsersResolver, BasketService, OrdersService],
+  providers: [UsersService, UsersResolver, BasketService, OrdersService, MailService],
   imports: [
-    TypeOrmModule.forFeature([Users, Basket, Orders]),
-    BasketModule, OrdersModule, AuthModule
+    TypeOrmModule.forFeature([Users, Basket, Orders,]),
+    BasketModule, OrdersModule, AuthModule, MailModule,
   ]
 })
 export class UsersModule { }

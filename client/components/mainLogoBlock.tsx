@@ -24,7 +24,10 @@ const MainLogoBlock = () => {
                 user.cartSum = data.sum;
             })
 
-        }).catch((e) => console.log(e))
+        }).catch((e) => {
+            // localStorage.removeItem("JwtKey");
+            // user.isAuth = false;
+        })
         // .finally(() => setIsLoading(false));
         // console.log("add...");
     }, [rout])

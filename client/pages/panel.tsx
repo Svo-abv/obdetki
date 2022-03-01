@@ -16,7 +16,7 @@ const UserPanel = ({ headData }: any) => {
         localStorage.removeItem("JwtKey");
         user.isAuth = false;
         user.user = {};
-
+        navi.push("/");
     }
 
     return (

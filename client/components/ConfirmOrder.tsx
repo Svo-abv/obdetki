@@ -87,7 +87,7 @@ const ConfirmOrder = (props: IConfirmOrder) => {
                     Оформить заказ
                 </Button>
             </Form>
-            <ModalAlert show={modalShow} onHide={clouseAlertHandler} title={titleMessage} />
+            {modalShow && <ModalAlert show={modalShow} onHide={clouseAlertHandler} title={titleMessage} />}
         </>
     );
 };

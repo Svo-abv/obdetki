@@ -12,12 +12,16 @@ import { BasketRowsService } from '../basket-rows/basket-rows.service';
 import { BasketRows } from '../basket-rows/models/basket-rows.entity';
 import { MailModule } from '../mail/mail.module';
 import { MailService } from '../mail/mail.service';
+import { UsersService } from '../users/users.service';
+import { Users } from '../users/models/users.entity';
+import { CargoService } from '../cargo/cargo.service';
+import { Cargo } from '../cargo/models/cargo.entity';
 
 @Module({
   providers: [OrdersService, OrdersResolver, BasketService,
-    OrdersRowsService, BasketRowsService, MailService,],
+    OrdersRowsService, BasketRowsService, MailService, UsersService, CargoService],
   imports: [
-    TypeOrmModule.forFeature([Orders, Basket, OrdersRows, BasketRows]),
+    TypeOrmModule.forFeature([Orders, Basket, OrdersRows, BasketRows, Users, Cargo]),
     AuthModule, MailModule,
   ]
 })

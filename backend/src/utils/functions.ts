@@ -1,4 +1,4 @@
-export function getRandomNymber() {
+export function getRandomNumber() {
     const currDate = new Date();
     let min = Math.ceil(1);
     let max = Math.floor(500);
