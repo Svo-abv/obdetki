@@ -12,8 +12,8 @@ export default async function storeUpload(upload) {
     const stream = createReadStream();
     // const storedFileName = `${shortid.generate()}_${filename}`;
     const storedFileName = filename;
-    const storedFileUrl = new URL(storedFileName, UPLOAD_DIRECTORY_URL);
-
+    //  const storedFileUrl = new URL(storedFileName, UPLOAD_DIRECTORY_URL);
+    const storedFileUrl = UPLOAD_DIRECTORY_URL + storedFileName;
     // Store the file in the filesystem.
     await new Promise((resolve, reject) => {
         // Create a stream to which the upload will be written.

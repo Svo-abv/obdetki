@@ -1,12 +1,11 @@
 import { observer } from "mobx-react";
 import { useContext, useEffect, useState } from "react";
-import { Button, CloseButton, Col, Container, Row, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import HeadPage from "../components/headPage";
-import { deleteRowBasket, getCartRowsByUser, getMenuPages } from "../lib/globals";
+import { getCartRowsByUser, getMenuPages } from "../lib/globals";
 import styles from '../styles/Home.module.css';
 import { Context } from "./_app";
 import classes from '../styles/Basket.module.css';
-import Image from "next/image";
 import CartRows from "../components/cartRows";
 import ConfirmOrder from "../components/ConfirmOrder";
 

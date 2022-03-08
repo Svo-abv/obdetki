@@ -1,11 +1,9 @@
-import { gql } from "@apollo/client";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { Button } from "react-bootstrap";
-import client from "../apollo-client";
 import HeadPage from "../components/headPage";
-import { checkAuth, getMenuPages } from "../lib/globals";
+import { getMenuPages } from "../lib/globals";
 import styles from '../styles/Contacts.module.css';
 import { Context } from "./_app";
 
@@ -28,7 +26,6 @@ const UserPanel = ({ headData }: any) => {
         </div>
     )
 };
-
 
 export default observer(UserPanel);
 

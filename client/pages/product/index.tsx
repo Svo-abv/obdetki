@@ -1,12 +1,7 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import HeadPage from "../../components/headPage";
-import ProductsList from "../../components/productsList";
 import SearchBlock from "../../components/searchBlock";
-import { getMenuPages, getSearchProducts } from "../../lib/globals";
+import { getMenuPages } from "../../lib/globals";
 import styles from '../../styles/Home.module.css';
-import classes from '../../styles/Magazine.module.css'
 
 const Product = ({ headData }: any) => {
     // const [isLoading, setIsLoading] = useState(true);

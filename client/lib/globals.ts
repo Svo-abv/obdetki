@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import clientSsr from "../apollo-client-ssr";
 import client from "../apollo-client";
 
 interface IMenuPages {
@@ -7,7 +8,7 @@ interface IMenuPages {
 }
 
 export async function getMenuPages(): Promise<IMenuPages> {
-    const Pages = await client.query({
+    const Pages = await clientSsr.query({
         query: gql`
         query Pages{
             getAllPages {
@@ -18,7 +19,7 @@ export async function getMenuPages(): Promise<IMenuPages> {
         }`,
     });
 
-    const Categories = await client.query({
+    const Categories = await clientSsr.query({
         query: gql`query Categories {
             getAllRootProductsCategories {
                                             id
@@ -39,6 +40,26 @@ export async function getMenuPages(): Promise<IMenuPages> {
 }
 
 export async function getProductsByIdCategory(id: number): Promise<any> {
+    const { data } = await clientSsr.query({
+        query: gql`
+        query{
+            getProductsByProductCtatalogeId(id: ${id}) {
+                name
+                code
+                price
+                uuid_1c
+                deleted
+                id
+                productImages {
+                                url
+                }
+            }
+        }`,
+    });
+    return data;
+}
+
+export async function getProductsByIdCategoryOnClient(id: number): Promise<any> {
     const { data } = await client.query({
         query: gql`
         query{
@@ -58,8 +79,53 @@ export async function getProductsByIdCategory(id: number): Promise<any> {
     return data;
 }
 
-export async function getProductById(id: number): Promise<any> {
+export async function getFiltredProducts(id: number, filters: any): Promise<any> {
     const { data } = await client.query({
+        fetchPolicy: "no-cache",
+        variables: { filters: filters },
+        query: gql`
+        query($filters: [FilterProductInput!]!) {
+        getFiltredProducts(id: ${id}, filters: $filters) {
+                        name
+                        code
+                        price
+                        uuid_1c
+                        deleted
+                        id
+                        productImages { url } 
+                    }
+        }`,
+    });
+    return data.getFiltredProducts;
+}
+
+export async function getProductsFiltersByIdCategory(id: number): Promise<any> {
+    const { data } = await clientSsr.query({
+        query: gql`
+            query {
+                getProductsFiltersByProductCtatalogeId(id: ${id}) {
+                    name
+                    value
+                }
+            }`,
+    });
+    return data.getProductsFiltersByProductCtatalogeId;
+}
+
+export async function getProductsFiltersByIdCategoryOnClient(id: number): Promise<any> {
+    const { data } = await client.query({
+        query: gql`
+            query {
+                getProductsFiltersByProductCtatalogeId(id: ${id}) {
+                    name
+                    value
+                }
+            }`,
+    });
+    return data.getProductsFiltersByProductCtatalogeId;
+}
+export async function getProductById(id: number): Promise<any> {
+    const { data } = await clientSsr.query({
         query: gql`
         query{
             getProductById(id: ${id}) {
@@ -85,7 +151,7 @@ export async function getProductById(id: number): Promise<any> {
 }
 
 export async function getProductImagesByProductId(id: number): Promise<any> {
-    const { data } = await client.query({
+    const { data } = await clientSsr.query({
         query: gql`
         query{
             getImagesByProductId(id: ${id}) {
@@ -97,7 +163,7 @@ export async function getProductImagesByProductId(id: number): Promise<any> {
 }
 
 export async function getPairsInBox(productId: number, propertyId: number): Promise<any> {
-    const { data } = await client.query({
+    const { data } = await clientSsr.query({
         query: gql`
        query{
             getProductPropertyRowByProductIdAndProperyId(productId: ${productId}, propertyId: ${propertyId}) {
@@ -132,7 +198,7 @@ interface IgetLatest20Product {
     getLastNewsProducts: any;
 }
 export async function getLatest20Products(): Promise<IgetLatest20Product> {
-    const { data } = await client.query({
+    const { data } = await clientSsr.query({
         fetchPolicy: 'no-cache',
         query: gql`
         query Products{
@@ -150,7 +216,7 @@ export async function getLatest20Products(): Promise<IgetLatest20Product> {
 }
 
 export async function getAllChildresnProductsCategoriesByParent(id: number): Promise<any> {
-    const { data } = await client.query({
+    const { data } = await clientSsr.query({
         query: gql`
         query{
             getAllChildresnProductsCategoriesByParent(id: ${id}) {
@@ -191,7 +257,7 @@ interface IgetPageData {
 }
 
 export async function getPageData(id: number): Promise<IgetPageData> {
-    const { data } = await client.query({
+    const { data } = await clientSsr.query({
         query: gql`
         query{
         getPageById(id:${id} ) {

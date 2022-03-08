@@ -27,7 +27,7 @@ export class OrdersRows {
     @Field()
     productId?: number;
 
-    @ManyToOne(() => Orders, order => order.id)
+    @ManyToOne(() => Orders, order => order.id, { onDelete: "CASCADE" })
     @Field(type => Orders)
     order?: Orders;
 

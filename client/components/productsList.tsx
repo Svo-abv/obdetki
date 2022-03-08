@@ -2,8 +2,7 @@
 import { observer } from 'mobx-react';
 import Link from 'next/link';
 import React, { useContext } from 'react';
-import { Container, Card, Button } from 'react-bootstrap';
-import { insertIntoBasket } from '../lib/globals';
+import { Container, Card } from 'react-bootstrap';
 import { Context } from '../pages/_app';
 import classes from '../styles/ProductsList.module.css'
 import ButtonCart from './ButtonCart';

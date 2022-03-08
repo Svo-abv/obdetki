@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react';
-import Link from 'next/link';
 import React from 'react';
-import { Navbar, Container, Nav, NavDropdown, Dropdown } from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 import classes from '../styles/NavigationMenublock.module.css'
 
 const NavigationMenu = ({ props }: any) => {

@@ -1,6 +1,4 @@
-import jwtDecode from 'jwt-decode';
-import { observer } from 'mobx-react';
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
 import classes from '../styles/ContactsTopBlock.module.css'

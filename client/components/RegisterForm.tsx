@@ -2,7 +2,7 @@ import jwtDecode from 'jwt-decode';
 import { observer } from 'mobx-react';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
-import { Button, Modal, Form, InputGroup, Row, Alert } from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
 import { registerUser } from '../lib/globals';
 import { Context } from '../pages/_app';
 

@@ -1,6 +1,4 @@
-import { gql } from "@apollo/client";
 import { observer } from "mobx-react";
-import client from "../apollo-client";
 import HeadPage from "../components/headPage";
 import { getMenuPages, getPageData } from "../lib/globals";
 import styles from '../styles/Home.module.css';

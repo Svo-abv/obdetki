@@ -1,7 +1,6 @@
 import { observer } from "mobx-react";
-import { getMenuPages, getProductsByIdCategory, getAllChildresnProductsCategoriesByParent } from "../../lib/globals";
+import { getMenuPages, getProductsByIdCategory, getAllChildresnProductsCategoriesByParent, getProductsFiltersByIdCategory, getProductsFiltersByIdCategoryOnClient, getProductsByIdCategoryOnClient, getFiltredProducts } from "../../lib/globals";
 import styles from '../../styles/Home.module.css';
-import client from "../../apollo-client";
 import HeadPage from "../../components/headPage";
 import { gql } from "@apollo/client";
 import { Container, Form, ListGroup, Spinner } from "react-bootstrap";
@@ -9,31 +8,74 @@ import { useEffect, useState } from "react";
 import ProductsList from "../../components/productsList";
 import SearchBlock from "../../components/searchBlock";
 import classes from '../../styles/Magazine.module.css'
+import clientSsr from "../../apollo-client-ssr";
 
-const CtegoriesItem = ({ headData, brandId, products, categories }: any) => {
+interface ISelectedFilter {
+    name: string;
+    value: string;
+}
+
+const CtegoriesItem = ({ headData, brandId, products, categories, filters }: any) => {
     const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingFilter, setIsLoadingFilter] = useState(true);
     const [productList, setProductList] = useState(products);
     const [productCategoryList, setProductCategoryList] = useState(categories);
+    const [currentFilters, setCurrentFilters] = useState(filters);
+    const [currentSelectedFilter, setCurrentSelectedFilter] = useState<ISelectedFilter[]>([]);
+    const [currentCategory, setCurrentCategory] = useState(brandId);
 
     useEffect(() => {
-
-        // getAllChildresnProductsCategoriesByParent(brandId).then((data) =>
-        //     setProductCategoryList(data.getAllChildresnProductsCategoriesByParent));
-
-        // getProductsByIdCategory(brandId)
-        //     .then((data) => { setProductList(data.getProductsByProductCtatalogeId); })
-        //     .finally(() => setIsLoading(false));
         setIsLoading(false)
+        setIsLoadingFilter(false);
     }, []);
 
     const onClikHandle = (category: any) => {
         setIsLoading(true);
-        console.log(category.id);
-        getProductsByIdCategory(category.id)
-            .then((data) => { setProductList(data.getProductsByProductCtatalogeId); })
+        setIsLoadingFilter(true);
+        setCurrentSelectedFilter([]);
+        getProductsByIdCategoryOnClient(category.id)
+            .then((p) => {
+                getProductsFiltersByIdCategoryOnClient(category.id).then((f) => {
+                    setCurrentFilters(f);
+                    setCurrentCategory(category.id);
+                }).finally(() => setIsLoadingFilter(false));
+                setProductList(p.getProductsByProductCtatalogeId);
+            })
             .finally(() => setIsLoading(false));
     }
 
+    const onSelectHandler = (e: any, name: any) => {
+        setIsLoading(true);
+        const currValue = e.target.value;
+        let curr = [{ name: "", value: "" }];
+        if (currValue == "") {
+            curr = currentSelectedFilter.filter((item => item.name != name));
+        } else {
+            curr = [...currentSelectedFilter, { name: name, value: currValue }];
+        }
+        if (curr.length > 0) {
+            getFiltredProducts(currentCategory, curr).then((data) => {
+                setProductList(data);
+            }).finally(() => {
+                setIsLoading(false);
+                setIsLoadingFilter(false);
+            });
+        } else {
+            setCurrentSelectedFilter([]);
+            getProductsByIdCategoryOnClient(currentCategory)
+                .then((p) => {
+                    getProductsFiltersByIdCategoryOnClient(currentCategory).then((f) => {
+                        setCurrentFilters(f);
+                        setCurrentCategory(currentCategory);
+                    });
+                    setProductList(p.getProductsByProductCtatalogeId);
+                })
+                .finally(() => setIsLoading(false));
+        }
+        setCurrentSelectedFilter(curr);
+    }
+
+    let currName = "";
     return (
         <div>
             <HeadPage title={headData.title} description={headData.description} />
@@ -60,34 +102,26 @@ const CtegoriesItem = ({ headData, brandId, products, categories }: any) => {
                     </Container>
                     <div className={classes.filters}>
                         <h5>Фильтр:</h5>
-                        <Form.Label>Бренд</Form.Label>
-                        <Form.Select aria-label="Бренд">
-                            <option>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </Form.Select>
-                        <Form.Label>Вид</Form.Label>
-                        <Form.Select aria-label="Вид">
-                            <option>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </Form.Select>
-                        <Form.Label>Внутренний материал</Form.Label>
-                        <Form.Select aria-label="Внутренний материал">
-                            <option>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </Form.Select>
-                        <Form.Label>Внешний материал</Form.Label>
-                        <Form.Select aria-label="Внешний материал">
-                            <option>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </Form.Select>
+                        {
+                            !isLoadingFilter ? (currentFilters.map((filter: any) => {
+                                if (currName !== filter.name) {
+                                    currName = filter.name;
+                                    const curr = currentFilters.filter((currFilter: any) => currFilter.name == filter.name);
+                                    return (
+                                        <div key={filter.name}>
+                                            <Form.Label>{filter.name}</Form.Label>
+                                            <Form.Select aria-label={filter.name} onChange={(e) => onSelectHandler(e, filter.name)}>
+                                                <option></option>
+                                                {
+                                                    curr.map((currOption: any) => (<option key={currOption.value}>{currOption.value}</option>))
+                                                }
+                                            </Form.Select>
+                                        </div>
+                                    )
+                                }
+                            }))
+                                : <Spinner className={classes.spiner} animation="border" role="status" />
+                        }
                         <Form.Label>Цена</Form.Label>
                         <Form.Range />
                     </div>
@@ -104,7 +138,7 @@ export async function getServerSideProps({ params }: any) {
     const { id } = params;
     const pages = await getMenuPages();
 
-    const { data } = await client.query({
+    const { data } = await clientSsr.query({
         query: gql`
         query{
         getProductCategoriesById(id:  ${id}) {
@@ -117,6 +151,8 @@ export async function getServerSideProps({ params }: any) {
     const { getProductsByProductCtatalogeId } = await getProductsByIdCategory(id);
     const products = getProductsByProductCtatalogeId;// ? rawProducts.getAllChildresnProductsCategoriesByParent : [];
 
+    const filters = await getProductsFiltersByIdCategory(id);
+
     const rawCategories = await getAllChildresnProductsCategoriesByParent(id);
     const categories = rawCategories.getAllChildresnProductsCategoriesByParent;// ? rawCategories.getProductsByProductCtatalogeId : [];
 
@@ -127,6 +163,7 @@ export async function getServerSideProps({ params }: any) {
             brandId: id,
             products: products,
             categories: categories,
+            filters: filters,
         },
     };
 }

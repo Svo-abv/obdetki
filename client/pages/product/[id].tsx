@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import { getMenuPages, getProductById, getProductImagesByProductId, getPairsInBox, insertIntoBasket } from "../../lib/globals";
 import styles from '../../styles/Home.module.css';
 import HeadPage from "../../components/headPage";
-import { Button, Col, Container, Form, FormGroup, ListGroup, Row, Spinner, Table } from "react-bootstrap";
+import { Col, Container, Form, Row, Table } from "react-bootstrap";
 import { useContext, useState } from "react";
 import SearchBlock from "../../components/searchBlock";
 import classes from '../../styles/Product.module.css'

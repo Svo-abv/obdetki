@@ -19,9 +19,9 @@ type Orders {
   userId: Float!
   uuid_1c: String
   comment: String!
-  cargo: Cargo!
-  user: Users!
-  ordersRows: [OrdersRows!]!
+  cargo: CargoDto
+  user: UserDto
+  ordersRows: [OrdersRows!]
 }
 
 """
@@ -151,12 +151,14 @@ type ValidUserDto {
 }
 
 type UserDto {
+  id: Float!
   email: String!
   role: String
   name: String
   town: String
   address: String
   telephone: String
+  uuid_1c: String
 }
 
 type UserUpdateDto {
@@ -169,9 +171,18 @@ type BasketRowsDto {
   sum: Float
 }
 
+type CargoDto {
+  id: Float!
+  name: String!
+}
+
 type OrdersDto {
   id: Float!
   number: String!
+}
+
+type OrdersUpdateUuid1cDto {
+  affected: Float!
 }
 
 """Pages"""
@@ -184,9 +195,9 @@ type Pages {
   content: String!
 }
 
-type CargoDto {
-  id: Float!
+type ProductsFiltersDto {
   name: String!
+  value: String!
 }
 
 type ProductsDto {
@@ -229,6 +240,7 @@ type Query {
   getBasketRowsByUserId(id: Float!): [BasketRows!]
   getCountsRowsAndSumByUserId(userId: Float!): BasketRowsDto!
   getOrdersById(id: Float!): Orders!
+  getOrdersWhithoutUuid1C: [Orders!]!
   getOrdersByUserId(id: Float!): [Orders!]!
   getPageById(id: Float!): Pages!
   getAllPages: [Pages!]!
@@ -236,6 +248,8 @@ type Query {
   getProductById(id: Float!): Products!
   getProductByUuid1c(uuid: String!): Products!
   getProductsByProductCtatalogeId(id: Float!): [Products!]!
+  getProductsFiltersByProductCtatalogeId(id: Float!): [ProductsFiltersDto!]!
+  getFiltredProducts(id: Float!, filters: [FilterProductInput!]!): [Products!]!
   getAllProducts: [Products!]!
   getLastNewsProducts: [Products!]!
   getSearchProducts(search: String!): [Products!]!
@@ -265,12 +279,19 @@ input LoginUserInput {
   password: String!
 }
 
+input FilterProductInput {
+  name: String
+  value: String
+}
+
 type Mutation {
   registration(data: UserInput!): ValidUserDto!
   update(data: UserUpdateInput!): UserUpdateDto!
+  setUserUuid1cById(data: UserUpdateInput!): UserUpdateDto!
   createProductBasketRow(data: BasketRowInput!, userId: Float!): BasketRowsDto!
   deleteProductBasketRowById(userId: Float!, id: Float!): BasketRowsDto!
   createOrder(data: CreateOrderInput!): OrdersDto!
+  setOrderUuid1cById(data: setOrder1CUuidInput!): OrdersUpdateUuid1cDto!
   createProduct(data: ProductInput!): ProductsDto!
   UploadProductImage(file: ProductImageUploadInput!): ProductImageUploadType
   CreateProductImages(data: ProductImagesInput!): ProductImagesDto!
@@ -292,6 +313,7 @@ input UserUpdateInput {
   name: String
   town: String
   telephone: String
+  uuid_1c: String
 }
 
 input BasketRowInput {
@@ -304,6 +326,11 @@ input CreateOrderInput {
   cargoId: Float!
   userId: Float!
   comment: String!
+}
+
+input setOrder1CUuidInput {
+  id: Float!
+  uuid_1c: String!
 }
 
 input ProductInput {

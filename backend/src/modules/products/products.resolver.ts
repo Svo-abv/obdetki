@@ -6,8 +6,10 @@ import { ProductImages } from '../product-images/models/product-images.entity';
 import { ProductImagesService } from '../product-images/product-images.service';
 import { ProductPropertiesRows } from '../product-properties-rows/models/product-properties-rows.entity';
 import { ProductPropertiesRowsService } from '../product-properties-rows/product-properties-rows.service';
+import { ProductsFiltersDto } from './dto/products-filter.dto';
 import { ProductsDto } from './dto/products.dto';
 import { ProductInput } from './inputs/create-product-input';
+import { FilterProductInput } from './inputs/filter-product-input';
 import { Products } from './models/products.entity';
 import { ProductsService } from './products.service';
 
@@ -46,6 +48,26 @@ export class ProductsResolver {
         return products;
     }
 
+    @Query(returns => [ProductsFiltersDto])
+    async getProductsFiltersByProductCtatalogeId(@Args('id') id: number): Promise<ProductsFiltersDto[]> {
+        const filters = await this.productsService.getProductsFiltersByProductCtatalogeId(id);
+        if (!filters) {
+            throw new NotFoundException(id);
+        }
+        return filters;
+    }
+
+    @Query(returns => [Products])
+    async getFiltredProducts(@Args('id') id: number,
+        @Args({ name: 'filters', type: () => [FilterProductInput] }) filters: [FilterProductInput]
+    ): Promise<Products[]> {
+        const products = await this.productsService.getFiltredProducts(id, filters);
+        if (!products) {
+            throw new NotFoundException(id);
+        }
+        return products;
+    }
+
     @Query(returns => [Products])
     async getAllProducts(): Promise<Products[]> {
         const products = await this.productsService.getAllProducts();
@@ -63,7 +85,6 @@ export class ProductsResolver {
         }
         return products;
     }
-
 
     @Query(returns => [Products])
     async getSearchProducts(@Args('search') search: string): Promise<Products[]> {

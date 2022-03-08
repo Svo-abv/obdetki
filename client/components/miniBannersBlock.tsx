@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React, { Component } from 'react';
-import { Card, Col, Container, Row } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import classes from '../styles/miniBannersBlock.module.css'
 
 class MiniBannersBlock extends Component {

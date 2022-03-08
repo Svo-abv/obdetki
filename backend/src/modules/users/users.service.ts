@@ -57,6 +57,11 @@ export class UsersService {
         }
     }
 
+    async setUserUuid1cById(data: UserUpdateInput): Promise<UserUpdateDto> {
+        await this.usersRepository.update({ id: data.id }, { uuid_1c: data.uuid_1c });
+        return { updated: true };
+    }
+
     async checkAuth(user: Users): Promise<ValidUserDto> {
         const key = this.authService.sign({ id: user.id, email: user.email, name: user.name, role: user.role });
         return { JWTKey: key };

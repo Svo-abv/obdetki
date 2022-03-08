@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import React, { useContext, useState } from 'react';
-import { Button, Spinner } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { insertIntoBasket } from '../lib/globals';
 import { Context } from '../pages/_app';
 import classes from '../styles/ButtonCart.module.css'

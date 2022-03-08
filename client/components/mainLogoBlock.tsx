@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Container, Row, Col, Badge } from 'react-bootstrap';
 import classes from '../styles/MainLogoBlock.module.css'
 import { Cart3 } from 'react-bootstrap-icons';

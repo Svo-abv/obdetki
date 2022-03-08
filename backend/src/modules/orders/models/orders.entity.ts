@@ -37,15 +37,15 @@ export class Orders {
     comment: string;
 
     @ManyToOne(type => Cargo, cargo => cargo.id)
-    @Field(type => Cargo)
+    @Field(type => Cargo, { nullable: true })
     cargo: Cargo;
 
     @ManyToOne(type => Users, user => user.id)
-    @Field(type => Users)
+    @Field(type => Users, { nullable: true })
     user: Users;
 
     @OneToMany(() => OrdersRows, ordersRows => ordersRows.orderId, { onDelete: "CASCADE" })
-    @Field(type => [OrdersRows])
+    @Field(type => [OrdersRows], { nullable: true })
     ordersRows: OrdersRows[];
 
 }

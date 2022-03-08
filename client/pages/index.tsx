@@ -1,4 +1,3 @@
-import type { NextPage } from 'next'
 import styles from '../styles/Home.module.css';
 import HeadPage from '../components/headPage';
 import SliderMainPage from '../components/sliderMainPage';

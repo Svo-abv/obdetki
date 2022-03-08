@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import react, { FormEvent, useContext, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import client from "../apollo-client";
+import client from "../apollo-client-ssr";
 import HeadPage from "../components/headPage";
 import RegisterForm from "../components/RegisterForm";
 import { getAuthUser, getMenuPages } from "../lib/globals";

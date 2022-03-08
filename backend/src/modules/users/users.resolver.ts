@@ -83,4 +83,15 @@ export class UsersResolver {
     async update(@Args('data') data: UserUpdateInput): Promise<UserUpdateDto> {
         return this.usersService.update(data);
     }
+
+    @UseGuards(CheckAuthGuard)
+    @Mutation(returns => UserUpdateDto)
+    async setUserUuid1cById(@Args('data') data: UserUpdateInput): Promise<UserUpdateDto> {
+        try {
+            return await this.usersService.setUserUuid1cById(data);
+        } catch (e) {
+            throw new NotFoundException(e);
+        }
+
+    }
 }
