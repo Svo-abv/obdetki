@@ -8,6 +8,7 @@ import { ProductPropertiesRows } from '../product-properties-rows/models/product
 import { ProductPropertiesRowsService } from '../product-properties-rows/product-properties-rows.service';
 import { ProductsFiltersDto } from './dto/products-filter.dto';
 import { ProductsDto } from './dto/products.dto';
+import { ProductsUpdateDto } from './dto/update-product.dto';
 import { ProductInput } from './inputs/create-product-input';
 import { FilterProductInput } from './inputs/filter-product-input';
 import { Products } from './models/products.entity';
@@ -125,6 +126,11 @@ export class ProductsResolver {
         return this.productsService.createProduct(data);
     }
 
+    @UseGuards(CheckAuthGuard)
+    @Mutation(returns => ProductsUpdateDto)
+    async updateProduct(@Args('data') data: ProductInput): Promise<ProductsUpdateDto> {
+        return this.productsService.updateProduct(data);
+    }
 
     // @Query(returns => Basket, { nullable: true })
     // async getBasketByUserId(@Args('id') id: number): Promise<Basket> {

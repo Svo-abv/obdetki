@@ -6,6 +6,7 @@ import { ProductBrands } from '../product-brands/models/product-brands.entity';
 import { ProductImagesDto } from '../product-images/dto/product-images.dto';
 import { ProductsFiltersDto } from './dto/products-filter.dto';
 import { ProductsDto } from './dto/products.dto';
+import { ProductsUpdateDto } from './dto/update-product.dto';
 import { ProductInput } from './inputs/create-product-input';
 import { FilterProductInput } from './inputs/filter-product-input';
 import { Products } from './models/products.entity';
@@ -113,5 +114,10 @@ export class ProductsService {
 
     async createProduct(data: ProductInput): Promise<ProductsDto> {
         return await this.productRepository.save(data);
+    }
+
+    async updateProduct(data: ProductInput): Promise<ProductsUpdateDto> {
+        await this.productRepository.update({ uuid_1c: data.uuid_1c }, { price: data.price });
+        return { updated: true };
     }
 }

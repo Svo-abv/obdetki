@@ -204,6 +204,10 @@ type ProductsDto {
   id: Float!
 }
 
+type ProductsUpdateDto {
+  updated: Boolean!
+}
+
 type ProductImagesDto {
   id: Float!
 }
@@ -293,6 +297,7 @@ type Mutation {
   createOrder(data: CreateOrderInput!): OrdersDto!
   setOrderUuid1cById(data: setOrder1CUuidInput!): OrdersUpdateUuid1cDto!
   createProduct(data: ProductInput!): ProductsDto!
+  updateProduct(data: ProductInput!): ProductsUpdateDto!
   UploadProductImage(file: ProductImageUploadInput!): ProductImageUploadType
   CreateProductImages(data: ProductImagesInput!): ProductImagesDto!
   createProductCategories(data: ProductCategoriesInput!): ProductCategoriesDto!

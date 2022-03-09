@@ -9,6 +9,7 @@ interface IMenuPages {
 
 export async function getMenuPages(): Promise<IMenuPages> {
     const Pages = await clientSsr.query({
+        fetchPolicy: 'no-cache',
         query: gql`
         query Pages{
             getAllPages {
